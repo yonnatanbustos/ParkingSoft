@@ -11,6 +11,7 @@ from co.edu.uniquindio.parkingsoft.logica import Usuario, FacturaDia, Vehiculo, 
 
 # clase que modela un objeto tipo parqueadero.
 class Parqueadero():
+    #Declaracion de los atributos del parqueadero
     HORA_MOTO = 600
     HORA_CARRO: int = 1700
     CARRO_MENS: int = 85000
