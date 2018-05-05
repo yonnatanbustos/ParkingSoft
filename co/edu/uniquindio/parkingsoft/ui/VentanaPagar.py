@@ -8,49 +8,40 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_ventanaPagar(object):
     def setupUi(self, ventanaPagar):
         ventanaPagar.setObjectName("ventanaPagar")
         ventanaPagar.resize(706, 310)
         ventanaPagar.setMaximumSize(QtCore.QSize(706, 310))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-pagar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(
+            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-pagar.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         ventanaPagar.setWindowIcon(icon)
         ventanaPagar.setLayoutDirection(QtCore.Qt.LeftToRight)
         ventanaPagar.setStyleSheet("QLineEdit{\n"
-"font: 13px \"Tahoma\";\n"
-"border:1px solid black;\n"
-"border-radius: 5px;\n"
-"}\n"
-"\n"
-"QLabel{\n"
-"font: 13pt \"Tahoma\";\n"
-"}\n"
-"\n"
-"#labelTotalPagar{\n"
-"background-color: #0c80c4;\n"
-"}\n"
-"\n"
-"#labelValor, #labelTotalPagar{\n"
-"font-size: 60px;\n"
-"}\n"
-"\n"
-"#txtValor{\n"
-"font-size:60px;\n"
-"border:1px solid black;\n"
-"border-radius: 5px;\n"
-"\n"
-"}\n"
-"\n"
-"QPushButton{\n"
-"font: 13pt \"Tahoma\";\n"
-"border:1px solid black;\n"
-"border-radius: 5px;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"background-color: #0c80c4;\n"
-"}")
+                                   "font: 13px \"Tahoma\";\n"
+                                   "border:1px solid black;\n"
+                                   "border-radius: 5px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "QLabel{\n"
+                                   "font: 13pt \"Tahoma\";\n"
+                                   "}\n"
+                                   "\n"
+                                   "#labelTotalPagar{\n"
+                                   "background-color: #0c80c4;\n"
+                                   "}\n"
+                                   "\n"
+                                   "#labelValor, #labelTotalPagar{\n"
+                                   "font-size: 60px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "#txtValor{\n"
+                                   "QPushButton:hover{\n"
+                                   "background-color: #0c80c4;\n"
+                                   "}")
         self.centralwidget = QtWidgets.QWidget(ventanaPagar)
         self.centralwidget.setObjectName("centralwidget")
         self.formLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -96,7 +87,9 @@ class Ui_ventanaPagar(object):
         self.btnImprimir = QtWidgets.QPushButton(self.centralwidget)
         self.btnImprimir.setGeometry(QtCore.QRect(554, 210, 131, 81))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-imprimir.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(
+            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-imprimir.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnImprimir.setIcon(icon1)
         self.btnImprimir.setIconSize(QtCore.QSize(50, 50))
         self.btnImprimir.setObjectName("btnImprimir")
@@ -109,7 +102,9 @@ class Ui_ventanaPagar(object):
         self.btnVolver.setSizePolicy(sizePolicy)
         self.btnVolver.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-volver.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(
+            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-volver.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnVolver.setIcon(icon2)
         self.btnVolver.setIconSize(QtCore.QSize(50, 50))
         self.btnVolver.setObjectName("btnVolver")
@@ -117,7 +112,7 @@ class Ui_ventanaPagar(object):
         self.labelTotalPagar.setEnabled(True)
         self.labelTotalPagar.setGeometry(QtCore.QRect(170, 10, 511, 89))
         self.labelTotalPagar.setStyleSheet("border:1px solid black;\n"
-"border-radius: 5px;")
+                                           "border-radius: 5px;")
         self.labelTotalPagar.setAlignment(QtCore.Qt.AlignCenter)
         self.labelTotalPagar.setObjectName("labelTotalPagar")
         ventanaPagar.setCentralWidget(self.centralwidget)
@@ -138,4 +133,3 @@ class Ui_ventanaPagar(object):
         self.btnVolver.setText(_translate("ventanaPagar", "Volver"))
         self.labelTotalPagar.setText(_translate("ventanaPagar", "0"))
         self.actionParqueadero.setText(_translate("ventanaPagar", "Parqueadero"))
-
