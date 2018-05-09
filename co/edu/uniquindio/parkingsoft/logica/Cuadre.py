@@ -1,5 +1,6 @@
 from co.edu.uniquindio.parkingsoft.logica import Usuario, Parqueadero
 
+
 # clase para crear un cuadre
 class Cuadre():
     idCuadre: int
@@ -15,4 +16,3 @@ class Cuadre():
         self.usuario = usuario
         self.fecha = fecha
         self.valor = valor
-

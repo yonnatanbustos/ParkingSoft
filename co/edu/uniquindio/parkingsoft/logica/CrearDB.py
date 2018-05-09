@@ -125,12 +125,8 @@ class CrearDB():
             print("error en la creacion de la base de datos")
 
 
-
 if __name__ == '__main__':
     app = CrearDB()
     estado = app.crearBaseDatos()
     if estado == True:
         app.crearTablas()
-
-
->>>>>>> Stashed changes
