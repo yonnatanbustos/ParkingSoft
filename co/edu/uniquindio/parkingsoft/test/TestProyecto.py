@@ -5,8 +5,9 @@ from pymysql.cursors import Cursor
 
 from co.edu.uniquindio.parkingsoft.logica import Parqueadero, Usuario
 
-
+# clase donde se implementan las pruebas unitarias
 class TestProyecto(unittest.TestCase):
+    # variables necesarias para usar la base de datos en las pruebas
     conect: connect
     cursor: Cursor
     host: str = 'localhost'
@@ -14,6 +15,7 @@ class TestProyecto(unittest.TestCase):
     nameUser: str = 'root'
     password: str = '12345'
 
+    # estebloque permite establecer la conexion a la base de datos.
     conect = connect(host=host,
                      user=nameUser,
                      password=password,
@@ -23,8 +25,10 @@ class TestProyecto(unittest.TestCase):
     cursor = conect.cursor()
     print(conect.cursor().connection)
 
+    # instancia de un parqueadero.
     parqueadero = Parqueadero.Parqueadero(conect)
 
+    # test del ingreso de un vehiculo al parqueadero.
     def test_ingresoVehico(self):
         usuario = Usuario.Usuario("1234", "yonnatan", "bustos", "yonnatan_bustos", "123", "EMPLEADO")
         self.parqueadero.usuario = usuario
@@ -35,6 +39,7 @@ class TestProyecto(unittest.TestCase):
         self.assertEqual(resultado, True)
         self.conect.rollback()
 
+    # test del registro de un usuario.
     def test_registrarUsuario(self):
         cedula = "1094960469"
         nombres = "YONNATAN EDUARDO"
@@ -48,6 +53,7 @@ class TestProyecto(unittest.TestCase):
         self.assertEqual(resultado, True)
         self.conect.rollback()
 
+    # test de la salida de un vehiculo del parqueadero.
     def test_salidaVehiculo(self):
         placa = "ZRM032"
         descuento = True
@@ -57,6 +63,7 @@ class TestProyecto(unittest.TestCase):
         self.assertEqual(estado, True)
         self.conect.rollback()
 
+    # test del ingreso de un vehiculo a una mensualidad.
     def test_ingresarMensualida(self):
         placa = "RBR198"
         tipoVehiculo = "CARRO_MENS"
@@ -72,6 +79,7 @@ class TestProyecto(unittest.TestCase):
         self.assertEqual(resultado, 1)
         self.conect.rollback()
 
+    # test del total a pagar por un vehiculo que estaba en el parqueadero.
     def test_pagarSalida(self):
         usuario = Usuario.Usuario("1234", "yonnatan", "bustos", "yonnatan_bustos", "123", "EMPLEADO")
         self.parqueadero.usuario = usuario
@@ -85,6 +93,7 @@ class TestProyecto(unittest.TestCase):
         self.assertEqual(resultado, 1)
         self.conect.rollback()
 
+    # test del cierre de caja de un dia.
     def test_calcularCierreCaja(self):
         (resultado, estado) = Parqueadero.Parqueadero.calcularCierreCaja(self.parqueadero)
         print("test_calcularCierreCaja", resultado)

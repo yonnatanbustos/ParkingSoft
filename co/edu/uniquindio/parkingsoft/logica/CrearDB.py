@@ -4,12 +4,14 @@ import pymysql.cursors
 # Clase para crear la base de datos del parqueadero
 
 class CrearDB():
+    # variables para inicializar la base de datos.
     host: str = 'localhost'
     puerto: int = 3306
     nameUser: str = 'root'
     password: str = '12345'
     nameDataBase: str = 'parqueadero'
 
+    # contructor de la clase
     def crearBaseDatos(self):
         estado = False
         sql = "CREATE DATABASE IF NOT EXISTS parqueadero"
@@ -28,6 +30,7 @@ class CrearDB():
             conetion.close()
         return estado
 
+    # creacion de las tablas de la base de datos
     def crearTablas(self):
         conection = pymysql.connect(host=self.host,
                                     user=self.nameUser,
@@ -112,6 +115,7 @@ class CrearDB():
         conection.close()
 
 
+# main de la clase.
 if __name__ == '__main__':
     app = CrearDB()
     estado = app.crearBaseDatos()

@@ -1,6 +1,6 @@
 from co.edu.uniquindio.parkingsoft.logica import Vehiculo, Parqueadero
 
-
+# clase que modela una mensualidad de un vehiculo en el parqueadero
 class Mensualidad():
     vehiculo: Vehiculo
     propietario: str
@@ -11,6 +11,7 @@ class Mensualidad():
     parqueadero: Parqueadero
     valor: int
 
+    # constructor de la clase
     def __init__(self, parqueadero, vehiculo, propietario, telefono, fechaEntrada, fechaSalida, estado):
         self.parqueadero = parqueadero
         self.vehiculo = vehiculo

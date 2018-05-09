@@ -52,8 +52,10 @@ class Parqueadero():
         self.usuario = None
         self.consultas()
 
+    # consultas para llenar las listas de los vehiculos y usuarios
     def consultas(self):
         try:
+            # llenando la lista de usuarios
             with self.conect.cursor() as cursor:
                 sql = "SELECT * FROM usuario"
                 cursor.execute(sql)
@@ -69,6 +71,7 @@ class Parqueadero():
                     usuario = Usuario.Usuario(cedula, nombres, apellidos, nombre_usuario, password, tipo)
                     self.listaUsuarios.append(usuario)
 
+            # llenando la lista de los vehiculos
             with self.conect.cursor() as cursor:
                 sql = "SELECT * FROM vehiculo"
                 cursor.execute(sql)
@@ -83,6 +86,7 @@ class Parqueadero():
                         vehiculo.idTiquete = idTiquete
                         self.lista_vehiculos.append(vehiculo)
 
+            # llenando la lista de los tiquetes
             with self.conect.cursor() as  cursor:
                 sql = "SELECT * FROM tiquete"
                 cursor.execute(sql)
@@ -106,6 +110,7 @@ class Parqueadero():
                         tiquete.descuento = descuento
                         self.listaFacturas.append(tiquete)
 
+            # llenando la lista de las mensualidades
             with self.conect.cursor() as cursor:
                 sql = "SELECT * FROM mensualidad"
                 cursor.execute(sql)
@@ -123,13 +128,16 @@ class Parqueadero():
                                                           fechaSalida, estado)
 
                     self.listaMensualidades.append(mensualidad)
-
-
-
-
         except:
             print()
 
+    # metodo que permite el registro de un usuario
+    # cedula: cedula del usuario a registrar
+    # nombres: nombres del usuario a registrar
+    # apellidos: apellidos  del usuario a registrar
+    # nombre_usuario: nombre de usuario  del usuario a registrar
+    # password: contraseña  del usuario a registrar
+    # tipo: tipo del usuario a registrar (administrador o empleado)
     def registrarUsuario(self, cedula, nombres, apellidos, nombre_usuario, password, tipo):
 
         if self.buscarUsuario(nombre_usuario) == None:
@@ -142,6 +150,8 @@ class Parqueadero():
         else:
             return False
 
+    # metodo que permite veriricar si un usuario existe en la base de datos por su cedula
+    # cedula: cedula de la persona a buscar
     def buscarUsuarioCedula(self, cedula):
 
         for u in self.listaUsuarios:
@@ -149,6 +159,9 @@ class Parqueadero():
                 return u
         return None
 
+    # metodo que permite el inicio de sesion
+    # nombre usuario: nombre de usuario de la persona a ingresar
+    # password: contraseña de la persona a ingresar.
     def iniciarSesion(self, nombreUsuario, password):
         self.usuario = self.buscarUsuario(nombreUsuario)
         if self.usuario is not None:
@@ -166,7 +179,8 @@ class Parqueadero():
         return None
 
     # metodo que registra la entrada de un vehiculo
-
+    # placa: placa del vehiculo que ingreso al parqueadero.
+    # tipoVehiculo: tipo del vehiculo que ingreso (carro o moto)
     def ingresoVehicular(self, placa: str, tipoVehiculo: str):
         estado = False
         mensaje = "None"
@@ -200,6 +214,7 @@ class Parqueadero():
             print("Placa < 5")
         return mensaje, estado
 
+    # metodo que ayuda a generar los id de los tiquetes automaticamente dependiendo del ultimo tiquete generado
     def obtenerIdTiquete(self):
         idTiquete = -1
         try:
@@ -212,6 +227,7 @@ class Parqueadero():
             self.conect.rollback()
         return idTiquete
 
+    # metodo que permite generar un factura de ingreso
     def registrarFactura(self):
         factura = None
         try:
@@ -234,7 +250,7 @@ class Parqueadero():
         return factura
 
     # metodo que busca un vehiculo dentro del parqueadero
-
+    # placa: placa del vehiculo a buscar
     def buscarVehiculo(self, placa):
         for p in self.lista_vehiculos:
             if p.placa == placa:
@@ -242,7 +258,8 @@ class Parqueadero():
         return None
 
     # metodo que permite la salida de un vehiculo
-
+    # placa: placa del vehiculo que sale del parqueadero
+    # descuento: booleano que permite saber si el cobro a realizar tiene descuento o no
     def salidaVehiculo(self, placa, descuento):
         self.vehiculo = self.buscarVehiculo(placa)
         estado = False
@@ -279,6 +296,8 @@ class Parqueadero():
         return self.tiquete, estado
 
     # Metodo para calcular el total a pagar de un vehiculo
+    # tiempo: total de tiempo que estuvo ell vehiculo en el parqueadero
+    # tipoVehiculo: tipo del vehiculo al que se le va a cobrar(carro o moto)
     def calcularCobro(self, tiempo, tipoVehiculo):
         tiempo = str(tiempo)
         totalCobro = 0
@@ -316,6 +335,7 @@ class Parqueadero():
         return totalCobro
 
     # Metodo para buscar un tiquete registrado en el parqueadero
+    # idTiquete: id del tiquete a buscar
     def buscarTiquete(self, idTiquete):
         for t in self.listaFacturas:
             if t.idTiquete == idTiquete:
@@ -323,6 +343,7 @@ class Parqueadero():
         return None
 
     # Metodo para calcular el total de tiempo transcurrido de un vehiculo
+    # tiquete: tiquete de ingreso para saber la hora de ingreso del vehiculo
     def calcularTiempo(self, tiquete: FacturaDia):
         retorno: str
         diferenciaHora = 0
@@ -354,6 +375,12 @@ class Parqueadero():
     # return 3 - la placa del vehciulo es menor a 5
     # return 4 - la dias de la mensualidad no se encuentra en el rago de pago (rango de dias: 15-31 dias)
     # return 5 - la fecha de entrada es mayor a la fecha de salida
+    # placa: placa del vehiculo a registrar la mensualidad
+    # tipoVehiculo: tipo del vehiculo a registrar
+    # propietario: nombre del proopietario del vehiculo
+    # telefono: telefono del propietario del vehiculo
+    # fechaEntrada: fecha de la iniciacion de la mensualidad
+    # fechaSalida: fecha de finaliacion de mensualidad
     def ingresarMensualida(self, placa, tipoVehiculo, propietario, telefono, fechaEntrada, fechaSalida):
         # definir la condicion de que la fechaEntrada sea menor a la fechaSalida
         try:
@@ -412,12 +439,21 @@ class Parqueadero():
             return 5
 
     # Metodo para buscar vehiculos de mensualida en el parqueadero
+    # placa: placa del vehiculo a buscar
     def buscarVehiculoMensualida(self, placa):
         for m in self.listaMensualidades:
             if m.placa == placa:
                 return m
         return None
 
+    # metodo que permite la modificacion de una mensualidad
+    # placaAnterior: placa a reemplazar
+    # placaNueva: placa nueva
+    # tipoVehiculo: tipo del vehiculo registrado
+    # propietario: nombre del propietario dle vehiculo
+    # telefono: telefono del propietario del vehiculo
+    # fechaEntrada: fecha del ingreso de mensualidad
+    # fechaSalida: fecha de finalizacion de la mensualidad
     def modificarMensualidad(self, placaAnterior: str, placaNueva, tipoVehiculo, propietario, telefono, fechaEntrada,
                              fechaSalida):
         mensualidad: Mensualidad = self.buscarVehiculoMensualida(placaAnterior)
@@ -429,6 +465,7 @@ class Parqueadero():
                 raise MensualidadException.MensualidadException("Error en la modificacion de la mensualidad")
 
     # Metodo para listar todas las mensualidades del parqueadero
+    # tabla: tabla actal de las mensualidades
     def actualizarTablaMensualida(self, tabla):
         row = 0
         for m in self.listaMensualidades:
@@ -456,6 +493,8 @@ class Parqueadero():
             tabla.setItem(row, 7, fechaSalida)
             row += 1
 
+    # metodo que lista los vehiculos que estan en el parqueadero actualmente
+    # tabla: tabla de los vehiculos que estan dentro del parqueadero actualmente
     def listarVehiculos(self, tabla):
         row = 0
         for v in self.lista_vehiculos:
@@ -475,6 +514,7 @@ class Parqueadero():
     # return 1 - si el metodo se cumple satisfactoriamente
     # return 2 - si el valorIngresado es menor al cobro total
     # return 3 - si el tiquete no existe en el sistema
+    # valorIngresado: cantidad a cobrar al propietario del vehiculo
     def pagarSalida(self, valorIngresado):
         mensaje = "None"
         if self.tiquete is not None:
@@ -505,6 +545,7 @@ class Parqueadero():
         else:
             return 3, mensaje
 
+    # metodo que permite realizar un cierre de caja al final de la jornada
     def calcularCierreCaja(self):
         producido: int = 0
         estado = False
@@ -526,13 +567,19 @@ class Parqueadero():
 
         return producido, estado
 
+    # metodo que permite modificar la tarifa de los vehiculos
+    # horaCarro: nueva tarifa del carro
+    # horaMoto: nueva tarifa de la moto
     def modificarTarifa(self, horaCarro, horaMoto):
         self.HORA_MOTO = horaMoto
         self.HORA_CARRO = horaCarro
 
     # Metodo para imprimir la informacion en el tiquete
+    # vehiculo: vehiculo que ingresa al parqueadero
+    # tiquete: tiquete asignado al ingreso del vehiculo
     def mostrarTiqueteEntrada(self, vehiculo: Vehiculo, tiquete: FacturaDia):
-        mensaje = self.NOMBRE + "\n"
+        mensaje = "TIQUETE DE ENTRADA"
+        mensaje += self.NOMBRE + "\n"
         mensaje += "Regimen: " + self.REGIMEN + "   " + self.NIT + "\n"
         mensaje += "Direccion: " + self.direccion + "Telefono: " + self.telefono + "\n"
         mensaje += "Atendido por: " + self.usuario.nombres + "\n"
@@ -553,8 +600,12 @@ class Parqueadero():
 
         return mensaje
 
+    # metodo para imprimir la informacion del tiquete de salida de un vehiculo
+    # vehiculo: vehiculo que sale del parqueadero
+    # tiquete: tiquete de la entrada del vehiculo
     def mostrarTiqueteSalida(self, vehiculo: Vehiculo, tiquete: FacturaDia):
-        mensaje = self.NOMBRE + "\n"
+        mensaje = "TIQUETE DE SALIDA" + "\n"
+        mensaje += self.NOMBRE + "\n"
         mensaje += "Regimen: " + self.REGIMEN + "   " + self.NIT + "\n"
         mensaje += "Direccion: " + self.direccion + "Telefono: " + self.telefono + "\n"
         mensaje += "================================================================\n"
@@ -579,4 +630,37 @@ class Parqueadero():
         mensaje += "Total a Pagar: $" + str(tiquete.cobro) + "\n"
         mensaje += "-------------------------------------------------------------------\n"
         mensaje += "TIQUETE DE SALIDA DEL VEHICULO"
+        return mensaje
+
+    # metodo que permite imprimir la informacion de un tiquete de tipo mensualidad
+    # m: mensualidad que se genero al ingresar el vehiculo
+    def mostrarTiqueteMensualidad(self, m: Mensualidad):
+        sql= "select idTiquete from mensualidad where placa = ('%s') " %(m.vehiculo.placa)
+        try:
+            with self.conect.cursor() as cursor:
+                cursor.execute(sql)
+                idTiquete= cursor.fetchone()
+        except:
+            print("eror")
+
+        fechaActual = datetime.today()
+        fechaAux = fechaActual.strftime(self.FORMATO_FECHA)
+        mensaje = "TIQUETE DE MENSUALIDAD" + "\n"
+        mensaje += self.NOMBRE + "\n"
+        mensaje += "Regimen: " + self.REGIMEN + "   " + self.NIT + "\n"
+        mensaje += "Direccion: " + self.direccion + "Telefono: " + self.telefono + "\n"
+        mensaje += "Fecha: " + fechaAux + "\n"
+        mensaje += "Atendido por: " + self.usuario.nombres + "\n"
+        mensaje += "------------------------------------------\n\n"
+        mensaje += "Placa: " + m.vehiculo.placa + "\n\n"
+        mensaje += "--------------------------------------------\n"
+        mensaje += "Numero de Factura: " + str(idTiquete) + "\n"
+        mensaje += "Fecha Entrada: " + m.fechaEntrada + "\n"
+        mensaje += "Fecha Entrada: " + m.fechaSalida + "\n"
+        mensaje += "Tipo Vehiculo: " + m.tipo_vehiculo + "\n"
+        mensaje += "valor a pagar: " + str(m.valor) + "\n"
+        mensaje += "------------------------------------------\n"
+        mensaje += "Horario:\n"
+        mensaje += self.horario
+
         return mensaje
