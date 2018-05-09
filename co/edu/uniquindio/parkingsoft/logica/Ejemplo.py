@@ -1,31 +1,35 @@
 from datetime import datetime, timedelta
-from co.edu.uniquindio.parkingsoft.LogicaUI import Login
-from PyQt5.QtSql import QSqlDatabase
-import os.path
 
-
-
-def createConection():
-    Login.db = QSqlDatabase.addDatabase('QMYSQL')
-    Login.db.setHostName(Login.host)
-    Login.db.setDatabaseName(Login.nameDataBase)
-    Login.db.setUserName(Login.nameUser)
-    Login.db.setPassword(Login.password)
-    Login.db.open()
-    print(Login.db.lastError().text())
-    return True
 
 class Ejemplo():
+    try:
+        f = open("parqueadero")
+        print(f)
+    except IOError as e:
+        print("Uh oh! Esto no existe")
     formatoHora = "%H:%M:%S"
-    formatoFecha = "%d/%m/%Y"
+    formatoFecha = '%d/%m/%Y'
     # fechaEntrada = datetime(2018, 4, 17).strftime(formatoFecha)
     # print(fechaEntrada)
-    fechaEntrada = datetime.strptime("10/10/2018", formatoFecha)
+    fechaEntrada = datetime.strptime("10/02/2018", "%d/%m/%Y")
     # salida = time.strptime(formatoFecha)
-    fechaSalida = datetime.strptime("18/10/2018", formatoFecha)
+    fechaSalida = datetime.strptime("10/03/2018", "%d/%m/%Y")
+    print("fecha de entrada ", fechaEntrada)
+    print("fecha de salida ", fechaSalida)
     horaEntrada = datetime.strptime("13:42:56", formatoHora)
     horaSalida = datetime.strptime("15:45:56", formatoHora)
     tiempo = fechaSalida - fechaEntrada
+
+    fechaActual = datetime.today()
+    fecha = fechaEntrada.strftime(formatoFecha)
+    print(fecha)
+
+    print("fecha actual: ", fechaActual)
+    if (fechaSalida > fechaEntrada):
+        print("fechaSalida>fechaEntrada")
+
+    if fechaActual > fechaSalida and fechaActual > fechaEntrada:
+        print("fechas ingresadas estan mal")
     tiempo = tiempo.days * 24
     total = horaSalida - horaEntrada + timedelta(hours=tiempo)
     print(total)
@@ -42,8 +46,3 @@ class Ejemplo():
     print(numero, " minutos")
     numero = int(cadena[2])
     print(numero, " segundos")
-
-    db = Login.Login.db.databaseName()
-    print(db)
-    estado = os.path.exists(db)
-    print(estado)

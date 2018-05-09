@@ -2,16 +2,18 @@ import time
 from datetime import datetime, timedelta
 
 from PyQt5 import QtGui
-from PyQt5.QtSql import QSqlQuery, QSqlDatabase
+from PyQt5.QtSql import QSqlDatabase
 from PyQt5.QtWidgets import QTableWidgetItem
+from pymysql import connect
 
+from co.edu.uniquindio.parkingsoft.excepciones.MensualidadException import MensualidadException
 from co.edu.uniquindio.parkingsoft.excepciones.VehiculoYaExiste import VehiculoYaExiste
 from co.edu.uniquindio.parkingsoft.logica import Usuario, FacturaDia, Vehiculo, Mensualidad
 
 
 # clase que modela un objeto tipo parqueadero.
 class Parqueadero():
-    #Declaracion de los atributos del parqueadero
+    # Declaracion de los atributos del parqueadero
     HORA_MOTO = 600
     HORA_CARRO: int = 1700
     CARRO_MENS: int = 85000
@@ -29,6 +31,7 @@ class Parqueadero():
                    "Domingos y Festivos 8am-2:30pm"
     NIT: str = "1038405474-5"
     REGIMEN: str = "SIMPLIFICADO"
+    conect: connect
 
     db: QSqlDatabase
     tiquete: FacturaDia
@@ -36,87 +39,96 @@ class Parqueadero():
     usuario: Usuario
 
     # constructor de la clase
-    def __init__(self, db: QSqlDatabase):
+    def __init__(self, conect: connect):
         self.lista_vehiculos = []
         self.listaUsuarios = []
         self.listaFacturas = []
         self.listaMensualidades = []
-        self.db = db
+        print(conect.open)
+        self.conect = conect
+        print(self.conect.open)
         self.tiquete = None
         self.vehiculo = None
         self.usuario = None
-        print(self.db.databaseName())
         self.consultas()
 
     def consultas(self):
-        estado = self.db.open()
-        if estado:
-            sql = "SELECT * FROM usuario"
-            query = QSqlQuery(sql)
-            while query.next():
-                cedula = query.value(1)
-                print("cedula ", cedula)
-                nombres = query.value(2)
-                apellidos = query.value(3)
-                nombre_usuario = query.value(4)
-                password = query.value(5)
-                tipo = query.value(6)
-                usuario = Usuario.Usuario(cedula, nombres, apellidos, nombre_usuario, password, tipo)
-                self.listaUsuarios.append(usuario)
+        try:
+            with self.conect.cursor() as cursor:
+                sql = "SELECT * FROM usuario"
+                cursor.execute(sql)
+                resultados = cursor.fetchall()
+                for u in resultados:
+                    cedula = u[1]
+                    print("cedula ", cedula)
+                    nombres = u[2]
+                    apellidos = u[3]
+                    nombre_usuario = u[4]
+                    password = u[5]
+                    tipo = u[6]
+                    usuario = Usuario.Usuario(cedula, nombres, apellidos, nombre_usuario, password, tipo)
+                    self.listaUsuarios.append(usuario)
 
-            sql = "SELECT * FROM vehiculo"
-            query = QSqlQuery(sql)
-            while query.next():
-                placa = query.value(1)
-                tipoVehiculo = query.value(2)
-                idTiquete = query.value(3)
-                cancelado = query.value(4)
-                if cancelado == 0:
+            with self.conect.cursor() as cursor:
+                sql = "SELECT * FROM vehiculo"
+                cursor.execute(sql)
+                resultados = cursor.fetchall()
+                for v in resultados:
+                    placa = v[1]
+                    tipoVehiculo = v[2]
+                    idTiquete = v[3]
+                    cancelado = v[4]
+                    if cancelado == 0:
+                        vehiculo = Vehiculo.Vehiculo(placa, tipoVehiculo)
+                        vehiculo.idTiquete = idTiquete
+                        self.lista_vehiculos.append(vehiculo)
+
+            with self.conect.cursor() as  cursor:
+                sql = "SELECT * FROM tiquete"
+                cursor.execute(sql)
+                resultados = cursor.fetchall()
+                for t in resultados:
+                    idTiquete = t[0]
+                    horaEntrada = t[1]
+                    fechaEntrada = t[2]
+                    horaSalida = t[3]
+                    fechaSalida = t[4]
+                    tiempo = t[5]
+                    cobro = t[6]
+                    descuento = t[7]
+                    cancelado = t[8]
+                    if cancelado == 0:
+                        tiquete = FacturaDia.FacturaDia(self, idTiquete, horaEntrada, fechaEntrada)
+                        tiquete.horaSalida = horaSalida
+                        tiquete.fechaSalida = fechaSalida
+                        tiquete.tiempo = tiempo
+                        tiquete.cobro = cobro
+                        tiquete.descuento = descuento
+                        self.listaFacturas.append(tiquete)
+
+            with self.conect.cursor() as cursor:
+                sql = "SELECT * FROM mensualidad"
+                cursor.execute(sql)
+                resultados = cursor.fetchall()
+                for m in resultados:
+                    estado = int(m[1])
+                    placa = m[2]
+                    tipoVehiculo = m[3]
                     vehiculo = Vehiculo.Vehiculo(placa, tipoVehiculo)
-                    vehiculo.idTiquete = idTiquete
-                    self.lista_vehiculos.append(vehiculo)
+                    propietario = m[4]
+                    telefono = m[5]
+                    fechaEntrada = m[7]
+                    fechaSalida = m[8]
+                    mensualidad = Mensualidad.Mensualidad(self, vehiculo, propietario, telefono, fechaEntrada,
+                                                          fechaSalida, estado)
 
-            sql = "SELECT * FROM tiquete"
-            query = QSqlQuery(sql)
-            while query.next():
-                idTiquete = query.value(0)
-                horaEntrada = query.value(1)
-                fechaEntrada = query.value(2)
-                horaSalida = query.value(3)
-                fechaSalida = query.value(4)
-                tiempo = query.value(5)
-                cobro = query.value(6)
-                descuento = query.value(7)
-                cancelado = query.value(8)
-                if cancelado == 0:
-                    tiquete = FacturaDia.FacturaDia(self, idTiquete, horaEntrada, fechaEntrada)
-                    tiquete.horaSalida = horaSalida
-                    tiquete.fechaSalida = fechaSalida
-                    tiquete.tiempo = tiempo
-                    tiquete.cobro = cobro
-                    tiquete.descuento = descuento
-                    self.listaFacturas.append(tiquete)
-
-            sql = "SELECT * FROM mensualidad"
-            query = QSqlQuery(sql)
-            while query.next():
-                estado = int(query.value(1))
-                placa = str(query.value(2))
-                tipoVehiculo = str(query.value(3))
-                vehiculo = Vehiculo.Vehiculo(placa, tipoVehiculo)
-                propietario = str(query.value(4))
-                telefono = str(query.value(5))
-                fechaEntrada = str(query.value(7))
-                fechaSalida = str(query.value(8))
-                mensualidad = Mensualidad.Mensualidad(self, vehiculo, propietario, telefono, fechaEntrada,
-                                                      fechaSalida, estado)
-
-                self.listaMensualidades.append(mensualidad)
+                    self.listaMensualidades.append(mensualidad)
 
 
-        else:
-            print("no se conecto base de datos")
-        self.db.close()
+
+
+        except:
+            print()
 
     def registrarUsuario(self, cedula, nombres, apellidos, nombre_usuario, password, tipo):
 
@@ -156,60 +168,69 @@ class Parqueadero():
     # metodo que registra la entrada de un vehiculo
 
     def ingresoVehicular(self, placa: str, tipoVehiculo: str):
-        self.db.open()
+        estado = False
         mensaje = "None"
         if len(placa) >= 5:
             vehiculo = self.buscarVehiculo(placa)
 
             if vehiculo is None:
-
-                vehiculo = Vehiculo.Vehiculo(placa, tipoVehiculo)
-                factura = self.registrarFactura()
-                vehiculo.setIdTiquete(factura.idTiquete)
-                self.lista_vehiculos.append(vehiculo)
-                sql = "INSERT INTO vehiculo (placa, tipoVehiculo, idTiquete, cancelado) " \
-                      "VALUES (:placa, :tipoVehiculo, :idTiquete, :cancelado)"
-                query = QSqlQuery()
-                query.prepare(sql)
-                query.bindValue(":placa", vehiculo.placa)
-                query.bindValue(":tipoVehiculo", vehiculo.tipo_vehiculo)
-                query.bindValue(":idTiquete", vehiculo.idTiquete)
-                query.bindValue(":cancelado", 0)
-                query.exec_()
-                mensaje = self.mostrarTiqueteEntrada(vehiculo, factura)
-                return mensaje, True
+                try:
+                    vehiculo = Vehiculo.Vehiculo(placa, tipoVehiculo)
+                    factura = self.registrarFactura()
+                    print(factura)
+                    vehiculo.setIdTiquete(factura.idTiquete)
+                    self.lista_vehiculos.append(vehiculo)
+                    print(vehiculo.idTiquete)
+                    sql = "INSERT INTO vehiculo (placa, tipoVehiculo, idTiquete, cancelado) " \
+                          "VALUES ('%s', '%s', %d, %d)" % (
+                              vehiculo.placa, vehiculo.tipo_vehiculo, vehiculo.idTiquete, 0)
+                    with self.conect.cursor() as cursor:
+                        cursor.execute(sql)
+                        self.conect.commit()
+                        mensaje = self.mostrarTiqueteEntrada(vehiculo, factura)
+                        estado = True
+                except Exception as e:
+                    self.lista_vehiculos.remove(vehiculo)
+                    self.conect.rollback()
+                    print(e)
+                    estado = False
             else:
                 raise VehiculoYaExiste()
         else:
             print("Placa < 5")
-
-        self.db.close()
-        return mensaje, False
+        return mensaje, estado
 
     def obtenerIdTiquete(self):
-        self.db.open()
         idTiquete = -1
-        sql = "SELECT idTiquete FROM tiquete ORDER BY idTiquete DESC LIMIT 1"
-        query = QSqlQuery(sql)
-        while query.next():
-            idTiquete = int(query.value(0))
+        try:
+            with self.conect.cursor() as cursor:
+                sql = "SELECT idTiquete FROM tiquete ORDER BY idTiquete DESC LIMIT 1"
+                cursor.execute(sql)
+                resultado = cursor.fetchone()
+                idTiquete = int(resultado[0])
+        except:
+            self.conect.rollback()
         return idTiquete
 
     def registrarFactura(self):
-        horaEntrada = time.strftime(self.FORMATO_HORA)
-        fechaEntrada = time.strftime(self.FORMATO_FECHA)
-        sql = "INSERT INTO tiquete (horaEntrada, fechaEntrada, cancelado) VALUES (:horaEntrada, :fechaEntrada, :cancelado)"
-        query = QSqlQuery()
-        query.prepare(sql)
-        query.bindValue(":horaEntrada", horaEntrada)
-        query.bindValue(":fechaEntrada", fechaEntrada)
-        query.bindValue(":cancelado", 0)
-        query.exec_()
+        factura = None
+        try:
+            with self.conect.cursor() as cursor:
+                print(cursor.connection)
 
-        idTiquete = self.obtenerIdTiquete()
+                horaEntrada = time.strftime(self.FORMATO_HORA)
+                fechaEntrada = time.strftime(self.FORMATO_FECHA)
+                sql = "INSERT INTO tiquete (horaEntrada, fechaEntrada, cancelado) VALUES ('%s', '%s', %d)" % (
+                    horaEntrada, fechaEntrada, 0)
+                cursor.execute(sql)
+                self.conect.commit()
+                idTiquete = self.obtenerIdTiquete()
 
-        factura = FacturaDia.FacturaDia(self, idTiquete, horaEntrada, fechaEntrada)
-        self.listaFacturas.append(factura)
+                factura = FacturaDia.FacturaDia(self, idTiquete, horaEntrada, fechaEntrada)
+                self.listaFacturas.append(factura)
+        except Exception as e:
+            self.conect.rollback()
+            print(e)
         return factura
 
     # metodo que busca un vehiculo dentro del parqueadero
@@ -234,7 +255,10 @@ class Parqueadero():
                     horaSalida = time.strftime(self.FORMATO_HORA)
                     self.tiquete.horaSalida = horaSalida
                     self.tiquete.fechaSalida = fechaSalida
-                    self.tiquete.descuento = descuento
+                    if descuento == True:
+                        self.tiquete.descuento = 1
+                    else:
+                        self.tiquete.descuento = 0
 
                     tiempo = self.calcularTiempo(self.tiquete)
                     self.tiquete.tiempo = tiempo
@@ -279,7 +303,7 @@ class Parqueadero():
             if minutos > 30:
                 totalCobro = totalCobro + self.HORA_CARRO
             else:
-                totalCobro = totalCobro + (self.HORA_CARRO / 2)
+                totalCobro = totalCobro + int(self.HORA_CARRO / 2)
 
             return totalCobro
         else:
@@ -287,7 +311,7 @@ class Parqueadero():
             if minutos > 30:
                 totalCobro = totalCobro + self.HORA_MOTO
             else:
-                totalCobro = totalCobro + (self.HORA_MOTO / 2)
+                totalCobro = totalCobro + int(self.HORA_MOTO / 2)
 
         return totalCobro
 
@@ -324,48 +348,68 @@ class Parqueadero():
         return diferenciaHora
 
     # Metodo para registrar una mensualida al parqueadero
+    # return -1 - las fechas de entrada y salida, estan por fuera de la fecha actual
     # return 1 - se registro la mensualidad satisfactoriamente
     # retrun 2 - el vehiculo ya esta registrado en la mensualidad
     # return 3 - la placa del vehciulo es menor a 5
-    # return 4 - la fecha de salida es menor a la de entrada
+    # return 4 - la dias de la mensualidad no se encuentra en el rago de pago (rango de dias: 15-31 dias)
+    # return 5 - la fecha de entrada es mayor a la fecha de salida
     def ingresarMensualida(self, placa, tipoVehiculo, propietario, telefono, fechaEntrada, fechaSalida):
-        self.db.open()
-        # retornos : 1-primer if, 2-segundo if, 3-tercer if, 0 se cumplio bien el metodo
         # definir la condicion de que la fechaEntrada sea menor a la fechaSalida
-        if fechaSalida > fechaEntrada:
-            if len(placa) >= 5:
-                vehiculo = self.buscarVehiculoMensualida(placa)
-                if vehiculo is None:
-                    vehiculo = Vehiculo.Vehiculo(placa, tipoVehiculo)
-                    mensualida = Mensualidad.Mensualidad(self, vehiculo, propietario, telefono, fechaEntrada,
-                                                         fechaSalida, 1)
-                    self.listaMensualidades.append(mensualida)
+        try:
+            fechaEntradaAux = datetime.strptime(fechaEntrada, self.FORMATO_FECHA)
+            fechaSalidaAux = datetime.strptime(fechaSalida, self.FORMATO_FECHA)
+        except:
+            raise MensualidadException(
+                "El formato de la fecha de entrada o la fecha de salida no son los adecuados")
 
-                    sql = "INSERT INTO mensualidad (estado, placa, tipoVehiculo, propietario, telefono, valor, fechaEntrada, fechaSalida)" \
-                          "VALUES (:estado, :placa, :tipoVehiculo, :propietario, :telefono, :valor, :fechaEntrada, :fechaSalida)"
-                    query = QSqlQuery()
-                    query.prepare(sql)
-                    query.bindValue(":estado", 1)
-                    query.bindValue(":placa", vehiculo.placa)
-                    query.bindValue(":tipoVehiculo", vehiculo.tipo_vehiculo)
-                    query.bindValue(":propietario", propietario)
-                    query.bindValue(":telefono", telefono)
-                    if vehiculo.tipo_vehiculo == "CARRO_MENS":
-                        query.bindValue(":valor", self.CARRO_MENS)
+        fechaActual = datetime.today()
+        if fechaActual > fechaSalidaAux and fechaActual > fechaEntradaAux:
+            return -1
+
+        resultado = fechaSalidaAux - fechaEntradaAux
+        resultado = resultado.days
+
+        if fechaSalidaAux > fechaEntradaAux:
+            if resultado >= 15 & resultado <= 31:
+                if len(placa) >= 5:
+                    vehiculo = self.buscarVehiculoMensualida(placa)
+                    if vehiculo is None:
+                        try:
+                            with self.conect.cursor() as cursor:
+                                vehiculo = Vehiculo.Vehiculo(placa, tipoVehiculo)
+                                mensualida = Mensualidad.Mensualidad(self, vehiculo, propietario, telefono,
+                                                                     fechaEntrada,
+                                                                     fechaSalida, 1)
+                                self.listaMensualidades.append(mensualida)
+                                valor = 0
+                                if vehiculo.tipo_vehiculo == "CARRO_MENS":
+                                    valor = self.CARRO_MENS
+                                else:
+                                    valor = self.MOTO_MENS
+
+                                sql = "INSERT INTO mensualidad (estado, placa, tipoVehiculo, propietario, telefono, valor, fechaEntrada, fechaSalida)" \
+                                      "VALUES (%d, '%s', '%s', '%s', '%s', %d, '%s', '%s')" % (
+                                          1, placa, tipoVehiculo, propietario, telefono, valor,
+                                          fechaEntrada,
+                                          fechaSalida)
+
+                                cursor.execute(sql)
+                                self.conect.commit()
+                                return 1
+                        except:
+                            self.conect.rollback()
+                            self.listaMensualidades.remove(mensualida)
+                            return 0
                     else:
-                        query.bindValue(":valor", self.MOTO_MENS)
-                    query.bindValue(":fechaEntrada", fechaEntrada)
-                    query.bindValue(":fechaSalida", fechaSalida)
-                    query.exec_()
-
-                    self.db.close()
-                    return 1
+                        return 2
                 else:
-                    return 2
+                    return 3
             else:
-                return 3
+                return 4
+
         else:
-            return 4
+            return 5
 
     # Metodo para buscar vehiculos de mensualida en el parqueadero
     def buscarVehiculoMensualida(self, placa):
@@ -374,9 +418,15 @@ class Parqueadero():
                 return m
         return None
 
-    def modificarMensualidad(self, mensualidad: Mensualidad):
+    def modificarMensualidad(self, placaAnterior: str, placaNueva, tipoVehiculo, propietario, telefono, fechaEntrada,
+                             fechaSalida):
+        mensualidad: Mensualidad = self.buscarVehiculoMensualida(placaAnterior)
         if mensualidad is not None:
-            hola = 1
+            estado = self.ingresarMensualida(placaNueva, tipoVehiculo, propietario, telefono, fechaEntrada, fechaSalida)
+            if estado == 1:
+                self.listaMensualidades.remove(mensualidad)
+            else:
+                raise MensualidadException.MensualidadException("Error en la modificacion de la mensualidad")
 
     # Metodo para listar todas las mensualidades del parqueadero
     def actualizarTablaMensualida(self, tabla):
@@ -426,36 +476,55 @@ class Parqueadero():
     # return 2 - si el valorIngresado es menor al cobro total
     # return 3 - si el tiquete no existe en el sistema
     def pagarSalida(self, valorIngresado):
-        self.db.open()
         mensaje = "None"
         if self.tiquete is not None:
             if valorIngresado >= self.tiquete.cobro:
-                self.lista_vehiculos.remove(self.vehiculo)
-                sql = "UPDATE vehiculo SET cancelado = 1 WHERE placa =(:placa)"
-                query = QSqlQuery()
-                query.prepare(sql)
-                query.bindValue(":placa", self.vehiculo.placa)
-                query.exec_()
-                sql = "UPDATE tiquete SET horaSalida =(:horaSalida), fechaSalida =(:fechaSalida), tiempo =(:tiempo)," \
-                      "cobro =(:cobro), descuento =(:descuento), cancelado = 1 WHERE idTiquete = (:idTiquete)"
-                query.prepare(sql)
-                query.bindValue(":horaSalida", self.tiquete.horaSalida)
-                query.bindValue(":fechaSalida", self.tiquete.fechaSalida)
-                query.bindValue(":tiempo", self.tiquete.tiempo)
-                query.bindValue(":cobro", self.tiquete.cobro)
-                query.bindValue(":descuento", self.tiquete.descuento)
-                query.bindValue(":idTiquete", self.tiquete.idTiquete)
-                query.exec_()
+                try:
+                    with self.conect.cursor() as cursor:
+                        self.lista_vehiculos.remove(self.vehiculo)
+                        placa = self.vehiculo.placa
+                        sql = "UPDATE vehiculo SET cancelado = 1 WHERE placa =('%s')" % (placa)
+                        cursor.execute(sql)
+                        self.conect.commit()
 
-                self.db.close()
-                mensaje = self.mostrarTiqueteSalida(self.vehiculo, self.tiquete)
-                return 1, mensaje
+                        sql = "UPDATE tiquete SET horaSalida =('%s'), fechaSalida =('%s'), tiempo =('%s'), cobro =(%i), descuento =(%i), cancelado = 1 WHERE idTiquete = (%i)" % (
+                            self.tiquete.horaSalida, self.tiquete.fechaSalida, self.tiquete.tiempo,
+                            self.tiquete.cobro,
+                            self.tiquete.descuento, self.tiquete.idTiquete)
+                        cursor.execute(sql)
+                        self.conect.commit()
+                        mensaje = self.mostrarTiqueteSalida(self.vehiculo, self.tiquete)
+                        return 1, mensaje
+                except:
+                    self.conect.rollback()
+                    return -1, mensaje
+
+
             else:
-                self.db.close()
                 return 2, mensaje
         else:
-            self.db.close()
             return 3, mensaje
+
+    def calcularCierreCaja(self):
+        producido: int = 0
+        estado = False
+        fechaActual = datetime.today()
+        fechaActualAux = fechaActual.strftime(self.FORMATO_FECHA)
+
+        try:
+            with self.conect.cursor() as cursor:
+                sql = "SELECT SUM(cobro) FROM tiquete WHERE fechaSalida =('%s') AND cancelado = (%d)" % (
+                    fechaActualAux, 1)
+                cursor.execute(sql)
+                self.conect.commit()
+                resultado = cursor.fetchone()
+                producido = resultado[0]
+                estado = True
+
+        except:
+            print("Error en el cierre de caja")
+
+        return producido, estado
 
     def modificarTarifa(self, horaCarro, horaMoto):
         self.HORA_MOTO = horaMoto
@@ -490,7 +559,7 @@ class Parqueadero():
         mensaje += "Direccion: " + self.direccion + "Telefono: " + self.telefono + "\n"
         mensaje += "================================================================\n"
         mensaje += "Numero de Factura: " + str(tiquete.idTiquete) + "\n"
-        mensaje += "Hora: " + tiquete.horaSalida + "    " + "Fecha: " + tiquete.fechaSalida + "\n"
+        mensaje += "Hora: " + tiquete.horaSalida + "   Fecha: " + tiquete.fechaSalida + "\n"
         mensaje += "Atendido por: " + self.usuario.nombres + " " + self.usuario.apellidos + "\n"
         mensaje += "-----------------------------------------------------------------\n\n"
         mensaje += "Placa: " + vehiculo.placa + "\n\n"

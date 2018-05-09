@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-from PyQt5 import QtCore
 
+from co.edu.uniquindio.parkingsoft.excepciones import MensualidadException
 from co.edu.uniquindio.parkingsoft.logica import Parqueadero
 from co.edu.uniquindio.parkingsoft.ui.VentanaMensualida import Ui_MainWindow
 
@@ -13,6 +13,7 @@ class MensualidadUI(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.parqueadero = parqueadero
+        self.placaAnterior = ""
         self.cambiarEnable(False)
         self.ui.btnNuevo.clicked.connect(self.nuevo)
         self.ui.btnVolver.clicked.connect(self.volver)
@@ -27,18 +28,29 @@ class MensualidadUI(QMainWindow):
         telefono = self.ui.txtTelefono.text()
         fechaEntrada = self.ui.txtFechaEntrada.text()
         fechaSalida = self.ui.txtFechaSalida.text()
+        try:
+            estado = self.parqueadero.ingresarMensualida(placa, tipoVehiculo, propietario, telefono, fechaEntrada,
+                                                         fechaSalida)
+            if estado == 1:
+                QMessageBox.information(self, "Notificación", "Registro Exitoso", QMessageBox.Ok)
+                self.actualizarTabla()
+            elif estado == 2:
+                QMessageBox.critical(self, "Aviso", "El vehiculo ya se encuentra registrado", QMessageBox.Yes)
+            elif estado == 3:
+                QMessageBox.warning(self, "Aviso", "El tamaño de la placa no es el indicado", QMessageBox.Yes)
+            elif estado == 4:
+                QMessageBox.warning(self, "Aviso", "El ranfo de los dias pagados, debe estar entre los 15 y 31 dias",
+                                    QMessageBox.Ok)
+            elif estado == 5:
+                QMessageBox.warning(self, "Aviso", "La fecha de entrada debe ser menor a la fecha de salida",
+                                    QMessageBox.Ok)
+            elif estado == -1:
+                QMessageBox.warning(self, "Aviso",
+                                    "Las fechas de entrada y salida, estan por fuera del rango la fecha actual",
+                                    QMessageBox.Ok)
 
-        estado = self.parqueadero.ingresarMensualida(placa, tipoVehiculo, propietario, telefono, fechaEntrada,
-                                                     fechaSalida)
-        if estado == 1:
-            QMessageBox.information(self, "Notificación", "Registro Exitoso", QMessageBox.Yes)
-        elif estado == 4:
-            QMessageBox.warning(self, "Aviso", "La fecha de salida debe ser mayor a la fecha de entrada",
-                                QMessageBox.Ok)
-        elif estado == 3:
-            QMessageBox.warning(self, "Aviso", "El tamaño de la placa no es el indicado", QMessageBox.Yes)
-        elif estado == 2:
-            QMessageBox.warning(self, "Aviso", "El vehiculo ya se encuentra registrado", QMessageBox.Yes)
+        except MensualidadException as e:
+            QMessageBox.information(self, "Notificación", str(e), QMessageBox.Ok)
 
     def seleccionar(self):
         row = self.ui.tableMensualidades.currentRow()
@@ -49,19 +61,34 @@ class MensualidadUI(QMainWindow):
         valor = self.ui.tableMensualidades.item(row, 5).text()
         fechaEntrada = self.ui.tableMensualidades.item(row, 6).text()
         fechaSalida = self.ui.tableMensualidades.item(row, 7).text()
+        self.placaAnterior = placa
 
         self.ui.txtPlaca.setText(placa)
         self.ui.comboTipo.setEditText(tipo)
         self.ui.txtPropietario.setText(propietario)
         self.ui.txtTelefono.setText(telefono)
-        # self.ui.txtFechaSalida.setLineEdit(fechaSalida)
         self.cambiarEnable(True)
-        self.ui.btnGuardar.setEnabled(False)
+        return row
 
     def eliminarMensualidad(self):
         placa = self
 
         hola = 1
+
+    def modificarMensualidad(self):
+        placaNueva = self.ui.txtPlaca.text()
+        tipoVehiculo = self.ui.comboTipo.currentText()
+        propietario = self.ui.txtPropietario.text()
+        telefono = self.ui.txtTelefono.text()
+        fechaEntrada = self.ui.txtFechaEntrada.text()
+        fechaSalida = self.ui.txtFechaSalida.text()
+
+        try:
+            self.parqueadero.modificarMensualidad(self.placaAnterior, placaNueva, tipoVehiculo, propietario, telefono,
+                                                  fechaEntrada, fechaSalida)
+            QMessageBox.information(self, "Notificacion", "Modificación Exitosa", "Aceptar")
+        except MensualidadException as e:
+            QMessageBox.warning(self, "Advertencia", str(e), QMessageBox.Ok)
 
     def volver(self):
         self.close()
@@ -81,6 +108,9 @@ class MensualidadUI(QMainWindow):
         self.cambiarEnable(True)
 
     def eliminar(self):
+        row = self.seleccionar()
+        placa = self.ui.tableMensualidades.item(row, 1).text()
+
         numero = 0
         # numero
 

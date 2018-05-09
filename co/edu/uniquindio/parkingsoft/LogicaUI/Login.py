@@ -1,26 +1,35 @@
 import sys
-
-from PyQt5.QtSql import QSqlDatabase
+from os import getcwd
+import os
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QApplication
+from pymysql import connect
+from pymysql.cursors import Cursor
 
 from co.edu.uniquindio.parkingsoft.LogicaUI import Principal, AdministradorUI
 from co.edu.uniquindio.parkingsoft.logica import Parqueadero
+from co.edu.uniquindio.parkingsoft.logica.CrearDB import CrearDB
 from co.edu.uniquindio.parkingsoft.ui.VentanaLogin import Ui_VentanaLogin
 
 
-def createConection():
-    Login.db = QSqlDatabase.addDatabase('QMYSQL')
-    Login.db.setHostName(Login.host)
-    Login.db.setDatabaseName(Login.nameDataBase)
-    Login.db.setUserName(Login.nameUser)
-    Login.db.setPassword(Login.password)
-    Login.db.open()
-    print(Login.db.lastError().text())
-    return True
+def crearConection():
+
+    Login.conect = connect(host=Login.host,
+                           user=Login.nameUser,
+                           password=Login.password)
+    print(getcwd())
+    os.
+
+    print(Login.conect.open)
+
+    Login.cursor = Login.conect.cursor()
+    estado = Login.conect.cursor().connection
+    print(estado)
+    return estado
 
 
 class Login(QMainWindow):
-    db: QSqlDatabase
+    conect: connect
+    cursor: Cursor
     host: str = 'localhost'
     nameDataBase: str = 'parqueadero'
     nameUser: str = 'root'
@@ -31,15 +40,13 @@ class Login(QMainWindow):
         QMainWindow.__init__(self, parent)
         self.ui = Ui_VentanaLogin()
         self.ui.setupUi(self)
-        self.parqueadero = Parqueadero.Parqueadero(self.db)
+        self.parqueadero = Parqueadero.Parqueadero(self.conect)
         self.ui.btnIniciarSesion.clicked.connect(self.iniciarSesion)
         self.ui.btnCancelar.clicked.connect(self.salir)
         self.principal = None
 
     def iniciarSesion(self):
         nombreUsuario = self.ui.txtUsuario.text()
-        nombreUsuario = nombreUsuario.upper()
-        print(nombreUsuario)
         password = self.ui.txtContrasena.text()
         if len(nombreUsuario) == 0 | len(password) == 0:
             QMessageBox.warning(self, "Error", "Ingrese usuario y/o la contraseña", QMessageBox.Ok)
@@ -66,15 +73,28 @@ class Login(QMainWindow):
             self.principal.showFullScreen()
             self.close()
 
-    def focusOutEvent(self, *args, **kwargs):
-        texto = self.ui.txtUsuario.text()
-        self.ui.txtUsuario.setText(texto.upper())
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    if not createConection():
+    # crearDB = CrearDB.CrearDB()
+    try:
+        if crearConection():
+            myapp = Login()
+
+            myapp.show()
+            sys.exit(app.exec_())
+
+        else:
+            CrearDB.crearBaseDatos()
+            CrearDB.crearTablas()
+            myapp = Login()
+
+            myapp.show()
+            sys.exit(app.exec_())
+
+
+
+    except Exception as e:
+        print("No se pudo establecer una conexion")
+        print(e.args)
         sys.exit(1)
-    myapp = Login()
-    myapp.show()
-    sys.exit(app.exec_())

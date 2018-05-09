@@ -89,6 +89,10 @@ class Principal(QMainWindow):
                 except VehiculoYaExiste:
                     QMessageBox.warning(self, "Error", "El vehicilo ya se encuentra registrado en el parqueadero",
                                         QMessageBox.Ok)
+                except Exception as e:
+                    QMessageBox.warning(self, "Error", "Error en la transaccion"+ e.args,
+                                        QMessageBox.Ok)
+
             else:
                 QMessageBox.warning(self, "Mensaje", "Seleccione tipo de vehiculo", QMessageBox.Ok)
         # metodo que registra la salida de un vehiculo
