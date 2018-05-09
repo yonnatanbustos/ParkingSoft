@@ -1,9 +1,32 @@
+import os
 from datetime import datetime, timedelta
+
+from pymysql import connect
+
+
+def conection():
+    try:
+        conect = connect(host='localhost',
+                         user='root',
+                         password='12345',
+                         db='parqueadero')
+        estado = conect.open
+        db = conect.db
+        print(estado)
+        print(db)
+        return estado
+    except:
+        return False
 
 
 class Ejemplo():
+    if conection():
+        print("conexion si")
+    else:
+        print("conexion no")
     try:
-        f = open("parqueadero")
+        # f = open("mensualidad")
+        f = os.path.isfile("")
         print(f)
     except IOError as e:
         print("Uh oh! Esto no existe")

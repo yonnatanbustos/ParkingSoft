@@ -1,6 +1,5 @@
 import sys
-from os import getcwd
-import os
+
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QApplication
 from pymysql import connect
 from pymysql.cursors import Cursor
@@ -12,19 +11,20 @@ from co.edu.uniquindio.parkingsoft.ui.VentanaLogin import Ui_VentanaLogin
 
 
 def crearConection():
+    try:
+        Login.conect = connect(host=Login.host,
+                               user=Login.nameUser,
+                               password=Login.password,
+                               database=Login.nameDataBase)
 
-    Login.conect = connect(host=Login.host,
-                           user=Login.nameUser,
-                           password=Login.password)
-    print(getcwd())
-    os.
+        print(Login.conect.open)
 
-    print(Login.conect.open)
-
-    Login.cursor = Login.conect.cursor()
-    estado = Login.conect.cursor().connection
-    print(estado)
-    return estado
+        Login.cursor = Login.conect.cursor()
+        estado = Login.conect.cursor().connection
+        print(estado)
+        return estado
+    except:
+        return False
 
 
 class Login(QMainWindow):
@@ -85,8 +85,9 @@ if __name__ == '__main__':
             sys.exit(app.exec_())
 
         else:
-            CrearDB.crearBaseDatos()
-            CrearDB.crearTablas()
+            CrearDB.crearBaseDatos(CrearDB)
+            CrearDB.crearTablas(CrearDB)
+            crearConection()
             myapp = Login()
 
             myapp.show()
