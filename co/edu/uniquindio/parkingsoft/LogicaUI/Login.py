@@ -17,6 +17,7 @@ def crearConection():
                            user=Login.nameUser,
                            password=Login.password)
     print(getcwd())
+    os.
 
     print(Login.conect.open)
 

@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+
 class Ejemplo():
     try:
         f = open("parqueadero")
