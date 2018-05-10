@@ -1,27 +1,32 @@
 import sys
-from os import getcwd
+
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QApplication
 from pymysql import connect
 from pymysql.cursors import Cursor
+
 from co.edu.uniquindio.parkingsoft.LogicaUI import Principal, AdministradorUI
 from co.edu.uniquindio.parkingsoft.logica import Parqueadero
 from co.edu.uniquindio.parkingsoft.logica.CrearDB import CrearDB
 from co.edu.uniquindio.parkingsoft.ui.VentanaLogin import Ui_VentanaLogin
 
+
 # metodo que genera la conexion con la base de datos.
 def crearConection():
+    try:
+        Login.conect = connect(host=Login.host,
+                               user=Login.nameUser,
+                               password=Login.password,
+                               database=Login.nameDataBase)
 
-    Login.conect = connect(host=Login.host,
-                           user=Login.nameUser,
-                           password=Login.password)
-    print(getcwd())
+        print(Login.conect.open)
 
-    print(Login.conect.open)
+        Login.cursor = Login.conect.cursor()
+        estado = Login.conect.cursor().connection
+        print(estado)
+        return estado
+    except:
+        return False
 
-    Login.cursor = Login.conect.cursor()
-    estado = Login.conect.cursor().connection
-    print(estado)
-    return estado
 
 #  logica de la UI del login
 class Login(QMainWindow):
@@ -74,6 +79,7 @@ class Login(QMainWindow):
             self.principal.showFullScreen()
             self.close()
 
+
 # main de la UI
 if __name__ == '__main__':
     app = QApplication(sys.argv)
@@ -86,8 +92,9 @@ if __name__ == '__main__':
             sys.exit(app.exec_())
 
         else:
-            CrearDB.crearBaseDatos()
-            CrearDB.crearTablas()
+            CrearDB.crearBaseDatos(CrearDB)
+            CrearDB.crearTablas(CrearDB)
+            crearConection()
             myapp = Login()
 
             myapp.show()

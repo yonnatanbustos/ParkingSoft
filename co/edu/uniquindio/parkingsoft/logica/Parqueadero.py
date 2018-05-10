@@ -163,6 +163,7 @@ class Parqueadero():
     # nombre usuario: nombre de usuario de la persona a ingresar
     # password: contraseña de la persona a ingresar.
     def iniciarSesion(self, nombreUsuario, password):
+        nombreUsuario = nombreUsuario.upper()
         self.usuario = self.buscarUsuario(nombreUsuario)
         if self.usuario is not None:
             if self.usuario.password == password:

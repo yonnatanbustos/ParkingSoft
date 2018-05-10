@@ -58,7 +58,7 @@ class CrearDB():
                     cursor.execute(sql)
 
                     sql = "INSERT INTO usuario(idUsuario, cedula, nombres, apellidos, nombre_usuario, password, tipo)" \
-                          "VALUES (2, '456', 'sebastian', 'alzate', 'b', '123', 'EMPLEADO')"
+                          "VALUES (2, '456', 'sebastian', 'alzate', 'B', '123', 'EMPLEADO')"
                     cursor.execute(sql)
 
                 sql = "CREATE TABLE IF NOT EXISTS tiquete (" \
