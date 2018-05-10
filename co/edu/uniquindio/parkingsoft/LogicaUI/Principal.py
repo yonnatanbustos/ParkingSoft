@@ -12,7 +12,7 @@ from co.edu.uniquindio.parkingsoft.logica import Usuario, Parqueadero, Vehiculo
 from co.edu.uniquindio.parkingsoft.logica.FacturaDia import FacturaDia
 from co.edu.uniquindio.parkingsoft.ui.VentanaPrincipal import Ui_Principal
 
-
+# metodo que crea la conexion a la base de datos
 def createConection():
     Principal.db = QSqlDatabase.addDatabase('QMYSQL')
     Principal.db.setHostName(Principal.host)
@@ -23,8 +23,7 @@ def createConection():
     print(Principal.db.lastError().text())
     return True
 
-
-# clase principal de la aplicacion
+# logica de la UI de la ventana principal
 class Principal(QMainWindow):
     db: QSqlDatabase
     host: str = 'localhost'
@@ -40,7 +39,7 @@ class Principal(QMainWindow):
     facturas = []  # lista de facturas del parqueadero
     usuarios = []  # lista de usuarios del parqueadero
 
-    # constructor de la clase
+    # constructor de la UI
     def __init__(self, parqueadero: Parqueadero, usuario: Usuario, parent=None, ):
         QMainWindow.__init__(self, parent)
         self.ui = Ui_Principal()
@@ -63,6 +62,7 @@ class Principal(QMainWindow):
         self.ui.btnPagar.clicked.connect(self.abrirPagar)
         self.ui.btnListarVehiculos.clicked.connect(self.reporteAvance)
 
+    # hilo que muestra la hora actual en la UI
     def mostrarHoraActual(self):
         hora = time.strftime(self.parqueadero.FORMATO_HORA)
         self.ui.labelHora.setText(hora)
@@ -72,10 +72,8 @@ class Principal(QMainWindow):
             self.ui.labelHora.setText(hora)
             sleep(1)
 
-        # metodo que registra la entrada de un vehiculo
-
+    # metodo que registra la entrada de un vehiculo
     def ingresoVehiculo(self):
-
         placa = self.ui.txtPlaca.text()
         tipovehiculo = self.ui.comboTipo.currentText()
         if len(placa) >= 5:
@@ -95,8 +93,8 @@ class Principal(QMainWindow):
 
             else:
                 QMessageBox.warning(self, "Mensaje", "Seleccione tipo de vehiculo", QMessageBox.Ok)
-        # metodo que registra la salida de un vehiculo
 
+    # metodo que registra la salida de un vehiculo
     def salidaVehicular(self):
 
         placa = self.ui.txtPlaca.text()
@@ -128,8 +126,7 @@ class Principal(QMainWindow):
         else:
             QMessageBox.warning(self, "Error", "Ingrese primero la placa", QMessageBox.Ok)
 
-    # Metodo que genera un cierre de caja
-
+    # Metodo que genera un cierre de caja al final de la jornada
     def cierreDeCaja(self):
         total = 0
         for fact in self.facturas:
@@ -148,22 +145,26 @@ class Principal(QMainWindow):
         u = Usuario.Usuario(nombre, apellido, cedula, usuario, contrasena, correo, tipo)
         self.usuarios.append(u)
 
+    # metodo que calcula la fecha del dia actual y la muestra en la UI
     def mostrarFechaActual(self):
         fecha = (time.strftime("%d /%m /%Y"))
         self.ui.labelFecha.setText(fecha)
 
+    # metodo que inicializa los atributos del parqueadero
     def inicializarParqueadero(self):
         self.parqueadero.nombre = "parqueadero niño Jair"
         self.parqueadero.horario = "lunes a viernes de 7:00 am a 9:00 pm"
         self.parqueadero.telefono = "7653452"
         self.parqueadero.direccion = "Armenia centro"
 
+    # metodo que devuelve al login
     def salir(self):
         opcion = QMessageBox.question(self, "Salir", "¿Seguro que quiere salir?", QMessageBox.Yes, QMessageBox.No)
         if opcion == QMessageBox.Yes:
             self.isRunning = False
             sys.exit(0)
 
+    # metodo que limpia todos los campos de texto
     def limpiar(self):
         self.ui.txtPlaca.setText("")
         self.ui.txtFechaEntrada.setText("")
@@ -178,6 +179,7 @@ class Principal(QMainWindow):
         self.cambiarSalidaEnable(True)
         self.ui.btnPagar.setEnabled(False)
 
+    # metodo que permite la edicion y ejecucion de funcionalidades bloqueadas
     def cambiarSalidaEnable(self, estado: bool):
         self.ui.txtPlaca.setEnabled(estado)
         self.ui.comboTipo.setEnabled(estado)
@@ -191,20 +193,21 @@ class Principal(QMainWindow):
         self.ui.btnSalir.setEnabled(estado)
         self.ui.comboTipo.setEnabled(estado)
 
+    # metodo que abre la ventana de mensualidades
     def mensualidad(self):
         self.ventana = MensualidadUI.MensualidadUI(self.parqueadero)
         self.ventana.showFullScreen()
 
+    # metodo que abre la ventana de cobro
     def abrirPagar(self):
         self.venPagar = PagarUI.PagarUI(self.parqueadero, self.tiquete, self.vehiculo)
         self.venPagar.show()
 
-    # self.pagar =
-
+    # metodo que abre la ventana de reportes
     def reporteAvance(self):
         self.ra = raUI.raUI(self.parqueadero, self)
         self.ra.show()
 
-
+# main de la aplicaacion
 if __name__ == '__main__':
     pass

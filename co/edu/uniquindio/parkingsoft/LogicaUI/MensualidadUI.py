@@ -4,10 +4,11 @@ from co.edu.uniquindio.parkingsoft.excepciones import MensualidadException
 from co.edu.uniquindio.parkingsoft.logica import Parqueadero
 from co.edu.uniquindio.parkingsoft.ui.VentanaMensualida import Ui_MainWindow
 
-
+#  logica de la UI de mensualidades
 class MensualidadUI(QMainWindow):
-    parqueadero: Parqueadero
+    parqueadero: Parqueadero  # parqueadero actual
 
+    # constructor de la UI
     def __init__(self, parqueadero: Parqueadero, parent=None):
         QMainWindow.__init__(self, parent)
         self.ui = Ui_MainWindow()
@@ -21,6 +22,7 @@ class MensualidadUI(QMainWindow):
         self.ui.tableMensualidades.itemClicked.connect(self.seleccionar)
         self.actualizarTabla()
 
+    # metodo que permite el registro grafico de una mensualidad y llama el metodo logico
     def ingresarMensualida(self):
         placa = self.ui.txtPlaca.text()
         tipoVehiculo = self.ui.comboTipo.currentText()
@@ -52,6 +54,7 @@ class MensualidadUI(QMainWindow):
         except MensualidadException as e:
             QMessageBox.information(self, "Notificación", str(e), QMessageBox.Ok)
 
+    # metodo que permite la seleccion de un vehiculo de la lista
     def seleccionar(self):
         row = self.ui.tableMensualidades.currentRow()
         placa = self.ui.tableMensualidades.item(row, 1).text()
@@ -70,11 +73,12 @@ class MensualidadUI(QMainWindow):
         self.cambiarEnable(True)
         return row
 
+    # metodo que elimina una mensualidad
     def eliminarMensualidad(self):
         placa = self
-
         hola = 1
 
+    # metodo que permite la modificacion de una mensualidad
     def modificarMensualidad(self):
         placaNueva = self.ui.txtPlaca.text()
         tipoVehiculo = self.ui.comboTipo.currentText()
@@ -90,9 +94,11 @@ class MensualidadUI(QMainWindow):
         except MensualidadException as e:
             QMessageBox.warning(self, "Advertencia", str(e), QMessageBox.Ok)
 
+    # metodo que cierra la UI actual y se devuelve a la UI anterior
     def volver(self):
         self.close()
 
+    # metodo que permite el uso de los botones y los campos de texto
     def cambiarEnable(self, estado):
         self.ui.txtPlaca.setEnabled(estado)
         self.ui.txtPropietario.setEnabled(estado)
@@ -104,16 +110,18 @@ class MensualidadUI(QMainWindow):
         self.ui.btnEliminar.setEnabled(estado)
         self.ui.btnGuardar.setEnabled(estado)
 
+    # metodo que llama a cambiar enable
     def nuevo(self):
         self.cambiarEnable(True)
 
+    #
     def eliminar(self):
         row = self.seleccionar()
         placa = self.ui.tableMensualidades.item(row, 1).text()
-
         numero = 0
         # numero
 
+    # metodo que actualiza la tabla de mensualidades
     def actualizarTabla(self):
         tabla = self.ui.tableMensualidades
         self.parqueadero.actualizarTablaMensualida(tabla)

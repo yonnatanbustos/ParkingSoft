@@ -633,7 +633,7 @@ border-radius: 5px;
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>Consultar</string>
+        <string>Prediccion</string>
        </property>
        <property name="icon">
         <iconset>

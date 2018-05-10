@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+# UI de la ventana modificar tarifa
 class Ui_VentanaModificarTarifa(object):
     def setupUi(self, VentanaModificarTarifa):
         VentanaModificarTarifa.setObjectName("VentanaModificarTarifa")

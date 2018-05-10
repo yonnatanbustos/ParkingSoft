@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+# UI de la ventana de registros avanzados
 class Ui_VentanaRA(object):
     def setupUi(self, VentanaRA):
         VentanaRA.setObjectName("VentanaRA")
