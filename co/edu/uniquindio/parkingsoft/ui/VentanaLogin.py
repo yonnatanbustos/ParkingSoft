@@ -13,7 +13,6 @@ from PyQt5.QtGui import QFont
 class Ui_VentanaLogin(object):
     font: QFont
 
-
     def setupUi(self, VentanaLogin):
         VentanaLogin.setObjectName("VentanaLogin")
         VentanaLogin.resize(700, 187)
@@ -25,7 +24,7 @@ class Ui_VentanaLogin(object):
         VentanaLogin.setMaximumSize(QtCore.QSize(700, 187))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(
-            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icons-página-principal-.png"),
+            "..\icons\icons-página-principal-.png"),
             QtGui.QIcon.Normal, QtGui.QIcon.Off)
         VentanaLogin.setWindowIcon(icon)
         VentanaLogin.setToolTip("")
@@ -34,38 +33,38 @@ class Ui_VentanaLogin(object):
         VentanaLogin.setAccessibleName("")
         VentanaLogin.setLayoutDirection(QtCore.Qt.LeftToRight)
         VentanaLogin.setStyleSheet("#VentanaLogin{\n"""
-"background-color: rgb(230, 230, 230)\n"
-"}\n"
-"\n"
-"QLabel{\n"
-"font: 13pt \"Tahoma\";\n"
-"\n"
-"}\n"
-"\n"
-"#labelLogin{\n"
-"font-size: 30px;\n"
-"}\n"
-"\n"
-"\n"
-"\n"
-"QLineEdit, QPushButton{\n"
-"font: 13pt \"Tahoma\";\n"
-"border: 1px solid black;\n"
-"\n"
-"}\n"
-"\n"
-"\n"
-"QPushButton:hover{\n"
-"\n"
-"background-color: #0c80c4;\n"
-"}\n"
-"\n"
-"#btnImagen:hover{\n"
-"background-color: none;\n"
-"}\n"
-"#btnImagen{\n"
-"border-style:none;\n"
-"}")
+                                   "background-color: rgb(230, 230, 230)\n"
+                                   "}\n"
+                                   "\n"
+                                   "QLabel{\n"
+                                   "font: 13pt \"Tahoma\";\n"
+                                   "\n"
+                                   "}\n"
+                                   "\n"
+                                   "#labelLogin{\n"
+                                   "font-size: 30px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "\n"
+                                   "\n"
+                                   "QLineEdit, QPushButton{\n"
+                                   "font: 13pt \"Tahoma\";\n"
+                                   "border: 1px solid black;\n"
+                                   "\n"
+                                   "}\n"
+                                   "\n"
+                                   "\n"
+                                   "QPushButton:hover{\n"
+                                   "\n"
+                                   "background-color: #0c80c4;\n"
+                                   "}\n"
+                                   "\n"
+                                   "#btnImagen:hover{\n"
+                                   "background-color: none;\n"
+                                   "}\n"
+                                   "#btnImagen{\n"
+                                   "border-style:none;\n"
+                                   "}")
         VentanaLogin.setWindowFilePath("")
         VentanaLogin.setInputMethodHints(QtCore.Qt.ImhNone)
         self.centralwidget = QtWidgets.QWidget(VentanaLogin)
@@ -168,7 +167,7 @@ class Ui_VentanaLogin(object):
         self.btnImagen.setText("")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(
-            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/parking-idea.png"),
+            "..\icons\parking-idea.png"),
             QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnImagen.setIcon(icon1)
         self.btnImagen.setIconSize(QtCore.QSize(140, 180))
@@ -186,7 +185,6 @@ class Ui_VentanaLogin(object):
         VentanaLogin.setTabOrder(self.txtContrasena, self.btnIniciarSesion)
         VentanaLogin.setTabOrder(self.btnIniciarSesion, self.btnCancelar)
 
-
     def retranslateUi(self, VentanaLogin):
         _translate = QtCore.QCoreApplication.translate
         VentanaLogin.setWindowTitle(_translate("VentanaLogin", "Parking - Inicio de Sesión"))
@@ -195,4 +193,3 @@ class Ui_VentanaLogin(object):
         self.btnIniciarSesion.setText(_translate("VentanaLogin", "Entrar"))
         self.btnCancelar.setText(_translate("VentanaLogin", "Salir"))
         self.labelLogin.setText(_translate("VentanaLogin", "PARQUEADERO EL NIÑO JAIR"))
-

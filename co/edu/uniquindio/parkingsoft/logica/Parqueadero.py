@@ -202,6 +202,12 @@ class Parqueadero():
                         cursor.execute(sql)
                         self.conect.commit()
                         mensaje = self.mostrarTiqueteEntrada(vehiculo, factura)
+                        sql = "INSERT INTO prediccion (fechaEntrada, horaEntrada, tipoVehiculo) VALUES ('%s', '%s', '%s')" % (
+                            factura.fechaEntrada,
+                            factura.horaEntrada,
+                            tipoVehiculo)
+                        cursor.execute(sql)
+                        self.conect.commit()
                         estado = True
                 except Exception as e:
                     self.lista_vehiculos.remove(vehiculo)
@@ -635,11 +641,11 @@ class Parqueadero():
     # metodo que permite imprimir la informacion de un tiquete de tipo mensualidad
     # m: mensualidad que se genero al ingresar el vehiculo
     def mostrarTiqueteMensualidad(self, m: Mensualidad):
-        sql= "select idTiquete from mensualidad where placa = ('%s') " %(m.vehiculo.placa)
+        sql = "select idTiquete from mensualidad where placa = ('%s') " % (m.vehiculo.placa)
         try:
             with self.conect.cursor() as cursor:
                 cursor.execute(sql)
-                idTiquete= cursor.fetchone()
+                idTiquete = cursor.fetchone()
         except:
             print("eror")
 

@@ -11,7 +11,8 @@ from PyQt5.QtGui import QFont
 
 
 class Ui_Principal(object):
-    font : QFont
+    font: QFont
+
     def setupUi(self, Principal):
         Principal.setObjectName("Principal")
         Principal.setWindowModality(QtCore.Qt.WindowModal)
@@ -28,66 +29,66 @@ class Ui_Principal(object):
         Principal.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         Principal.setAcceptDrops(False)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icons-página-principal-.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("/icons/icons-página-principal-.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Principal.setWindowIcon(icon)
         Principal.setStyleSheet("QLabel{\n"
-"font: 18pt \"Tahoma\";\n"
-"}\n"
-"\n"
-"QLineEdit,QComboBox{\n"
-"font: 18px \"Tahoma\";\n"
-"border:1px solid black;\n"
-"border-radius: 5px;\n"
-"\n"
-"}\n"
-"#labelTotalPagar{\n"
-"background-color: #0c80c4;\n"
-"}\n"
-"\n"
-"#labelPlaca, #labelTotalPagar{\n"
-"font-size: 60px;\n"
-"}\n"
-"\n"
-"#txtPlaca{\n"
-"font-size:60px;\n"
-"border:1px solid black;\n"
-"border-radius: 5px;\n"
-"\n"
-"}\n"
-"\n"
-"QPushButton{\n"
-"font: 13pt \"Tahoma\";\n"
-"border:1px solid black;\n"
-"border-radius: 5px;\n"
-"}\n"
-"\n"
-"#btnEntrada, #btnSalida{\n"
-"font: 25pt \"Tahoma\";\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"background-color: #0c80c4;\n"
-"}\n"
-"\n"
-"#layoutGeneral{\n"
-"border:1px solid black;\n"
-"border-radius: 5px;\n"
-"}\n"
-"\n"
-"#layoutDescuento{\n"
-"border:1px solid black;\n"
-"border-radius: 5px\n"
-"}\n"
-"\n"
-"#layoutUsuario{\n"
-"border:1px solid black;\n"
-"border-radius: 5px;\n"
-"}\n"
-"\n"
-"#radioDescuento{\n"
-"font: 18pt \"Tahoma\";\n"
-"}\n"
-"")
+                                "font: 18pt \"Tahoma\";\n"
+                                "}\n"
+                                "\n"
+                                "QLineEdit,QComboBox{\n"
+                                "font: 18px \"Tahoma\";\n"
+                                "border:1px solid black;\n"
+                                "border-radius: 5px;\n"
+                                "\n"
+                                "}\n"
+                                "#labelTotalPagar{\n"
+                                "background-color: #0c80c4;\n"
+                                "}\n"
+                                "\n"
+                                "#labelPlaca, #labelTotalPagar{\n"
+                                "font-size: 60px;\n"
+                                "}\n"
+                                "\n"
+                                "#txtPlaca{\n"
+                                "font-size:60px;\n"
+                                "border:1px solid black;\n"
+                                "border-radius: 5px;\n"
+                                "\n"
+                                "}\n"
+                                "\n"
+                                "QPushButton{\n"
+                                "font: 13pt \"Tahoma\";\n"
+                                "border:1px solid black;\n"
+                                "border-radius: 5px;\n"
+                                "}\n"
+                                "\n"
+                                "#btnEntrada, #btnSalida{\n"
+                                "font: 25pt \"Tahoma\";\n"
+                                "}\n"
+                                "\n"
+                                "QPushButton:hover{\n"
+                                "background-color: #0c80c4;\n"
+                                "}\n"
+                                "\n"
+                                "#layoutGeneral{\n"
+                                "border:1px solid black;\n"
+                                "border-radius: 5px;\n"
+                                "}\n"
+                                "\n"
+                                "#layoutDescuento{\n"
+                                "border:1px solid black;\n"
+                                "border-radius: 5px\n"
+                                "}\n"
+                                "\n"
+                                "#layoutUsuario{\n"
+                                "border:1px solid black;\n"
+                                "border-radius: 5px;\n"
+                                "}\n"
+                                "\n"
+                                "#radioDescuento{\n"
+                                "font: 18pt \"Tahoma\";\n"
+                                "}\n"
+                                "")
         Principal.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         Principal.setDocumentMode(False)
         Principal.setTabShape(QtWidgets.QTabWidget.Rounded)
@@ -120,8 +121,8 @@ class Ui_Principal(object):
         self.labelTotalPagar = QtWidgets.QLabel(self.gridLayoutWidget)
         self.labelTotalPagar.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.labelTotalPagar.setStyleSheet("border:1px solid black;\n"
-"border-radius: 5px;\n"
-"")
+                                           "border-radius: 5px;\n"
+                                           "")
         self.labelTotalPagar.setAlignment(QtCore.Qt.AlignCenter)
         self.labelTotalPagar.setObjectName("labelTotalPagar")
         self.layoutTotalPagar.addWidget(self.labelTotalPagar, 0, 0, 1, 1)
@@ -134,10 +135,10 @@ class Ui_Principal(object):
         font.setWeight(50)
         self.layoutGeneral.setFont(font)
         self.layoutGeneral.setStyleSheet("")
-        self.layoutGeneral.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
+        self.layoutGeneral.setAlignment(QtCore.Qt.AlignBottom | QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft)
         self.layoutGeneral.setObjectName("layoutGeneral")
         self.formLayout = QtWidgets.QFormLayout(self.layoutGeneral)
-        self.formLayout.setFormAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.formLayout.setFormAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.formLayout.setContentsMargins(5, 20, 5, 20)
         self.formLayout.setHorizontalSpacing(10)
         self.formLayout.setVerticalSpacing(15)
@@ -221,7 +222,9 @@ class Ui_Principal(object):
         self.btnMensualidad.setSizePolicy(sizePolicy)
         self.btnMensualidad.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-mensaualidad.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(
+            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-mensaualidad.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnMensualidad.setIcon(icon1)
         self.btnMensualidad.setIconSize(QtCore.QSize(50, 50))
         self.btnMensualidad.setObjectName("btnMensualidad")
@@ -235,7 +238,9 @@ class Ui_Principal(object):
         self.btnPagar.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btnPagar.setLayoutDirection(QtCore.Qt.LeftToRight)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-pagar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(
+            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-pagar.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPagar.setIcon(icon2)
         self.btnPagar.setIconSize(QtCore.QSize(50, 50))
         self.btnPagar.setObjectName("btnPagar")
@@ -248,7 +253,9 @@ class Ui_Principal(object):
         self.btnListarVehiculos.setSizePolicy(sizePolicy)
         self.btnListarVehiculos.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-RA.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(
+            QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-RA.png"),
+            QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnListarVehiculos.setIcon(icon3)
         self.btnListarVehiculos.setIconSize(QtCore.QSize(50, 50))
         self.btnListarVehiculos.setObjectName("btnListarVehiculos")
@@ -261,7 +268,9 @@ class Ui_Principal(object):
         self.btnInventario.setSizePolicy(sizePolicy)
         self.btnInventario.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-inventario.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(
+            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-inventario.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnInventario.setIcon(icon4)
         self.btnInventario.setIconSize(QtCore.QSize(50, 50))
         self.btnInventario.setObjectName("btnInventario")
@@ -289,7 +298,9 @@ class Ui_Principal(object):
         self.btnCuadre.setInputMethodHints(QtCore.Qt.ImhNone)
         self.btnCuadre.setText("Cuadre")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-cuadre.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(
+            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-cuadre.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnCuadre.setIcon(icon5)
         self.btnCuadre.setIconSize(QtCore.QSize(50, 50))
         self.btnCuadre.setShortcut("")
@@ -307,7 +318,9 @@ class Ui_Principal(object):
         self.btnLimpiar.setSizePolicy(sizePolicy)
         self.btnLimpiar.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icons-limpiar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap(
+            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icons-limpiar.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnLimpiar.setIcon(icon6)
         self.btnLimpiar.setIconSize(QtCore.QSize(50, 50))
         self.btnLimpiar.setObjectName("btnLimpiar")
@@ -320,7 +333,9 @@ class Ui_Principal(object):
         self.btnCambiarPrecio.setSizePolicy(sizePolicy)
         self.btnCambiarPrecio.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-editar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap(
+            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-editar.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnCambiarPrecio.setIcon(icon7)
         self.btnCambiarPrecio.setIconSize(QtCore.QSize(50, 50))
         self.btnCambiarPrecio.setObjectName("btnCambiarPrecio")
@@ -333,7 +348,9 @@ class Ui_Principal(object):
         self.btnConsultar.setSizePolicy(sizePolicy)
         self.btnConsultar.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-buscar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap(
+            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-buscar.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnConsultar.setIcon(icon8)
         self.btnConsultar.setIconSize(QtCore.QSize(50, 50))
         self.btnConsultar.setObjectName("btnConsultar")
@@ -346,7 +363,9 @@ class Ui_Principal(object):
         self.btnSalir.setSizePolicy(sizePolicy)
         self.btnSalir.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/salida.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon9.addPixmap(
+            QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/salida.png"),
+            QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnSalir.setIcon(icon9)
         self.btnSalir.setIconSize(QtCore.QSize(50, 50))
         self.btnSalir.setObjectName("btnSalir")
@@ -404,7 +423,9 @@ class Ui_Principal(object):
         sizePolicy.setHeightForWidth(self.btnEntrada.sizePolicy().hasHeightForWidth())
         self.btnEntrada.setSizePolicy(sizePolicy)
         icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-entrada.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon10.addPixmap(QtGui.QPixmap(
+            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-entrada.png"),
+                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnEntrada.setIcon(icon10)
         self.btnEntrada.setIconSize(QtCore.QSize(50, 50))
         self.btnEntrada.setObjectName("btnEntrada")
@@ -460,4 +481,3 @@ class Ui_Principal(object):
         self.btnEntrada.setText(_translate("Principal", "ENTRADA"))
         self.layoutDescuento.setTitle(_translate("Principal", "Descuento"))
         self.radioDescuento.setText(_translate("Principal", "Aplicar descuento"))
-

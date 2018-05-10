@@ -1,4 +1,7 @@
+import csv
 from datetime import datetime, timedelta
+
+import numpy as np
 
 
 class Ejemplo():
@@ -46,3 +49,11 @@ class Ejemplo():
     print(numero, " minutos")
     numero = int(cadena[2])
     print(numero, " segundos")
+
+    l = [[1, 2, 3, 4], [5, 6, 7, 8]]
+    datos = np.asarray(l)
+    # np.savetxt("output.csv",  # Archivo de salida
+    #         datos.T,  # Trasponemos los datos
+    #         fmt="%d",  # Usamos números enteros
+    #         delimiter=",")
+
