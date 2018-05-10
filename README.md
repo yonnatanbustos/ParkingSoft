@@ -1,4 +1,4 @@
 # ParkingSoft
 ProyectoFinal software III
 
-software que gestiona un parqueadero
+software que gestiona un parqueadero.

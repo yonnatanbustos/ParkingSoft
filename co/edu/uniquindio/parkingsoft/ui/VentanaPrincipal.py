@@ -9,7 +9,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFont
 
-
+# UI de la ventana principal de empleado
 class Ui_Principal(object):
     font: QFont
 

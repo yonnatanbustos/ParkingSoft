@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+# UI de la ventana principal de administrador
 class Ui_PrincipalAdministrador(object):
     def setupUi(self, PrincipalAdministrador):
         PrincipalAdministrador.setObjectName("PrincipalAdministrador")

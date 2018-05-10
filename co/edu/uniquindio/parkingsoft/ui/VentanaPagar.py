@@ -8,7 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
+# UI de la ventana de cobro
 class Ui_ventanaPagar(object):
     def setupUi(self, ventanaPagar):
         ventanaPagar.setObjectName("ventanaPagar")

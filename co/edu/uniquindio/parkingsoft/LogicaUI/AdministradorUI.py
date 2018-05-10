@@ -4,7 +4,7 @@ from co.edu.uniquindio.parkingsoft.LogicaUI import ModificarTarifaUI
 from co.edu.uniquindio.parkingsoft.logica import Parqueadero, Usuario
 from co.edu.uniquindio.parkingsoft.ui.VentanaAdministrador import Ui_PrincipalAdministrador
 
-# UI de la interfaz de inicio del administrador
+# logica de la UI de inicio del administrador
 class AdministradorUI(QMainWindow):
     usuario: Usuario
     parqueadero: Parqueadero
