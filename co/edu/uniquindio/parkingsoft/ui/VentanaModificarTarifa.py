@@ -99,7 +99,7 @@ class Ui_VentanaModificarTarifa(object):
         self.btnGuardar = QtWidgets.QPushButton(self.centralwidget)
         self.btnGuardar.setGeometry(QtCore.QRect(540, 290, 171, 51))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-guardar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("..\icons\icon-guardar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnGuardar.setIcon(icon)
         self.btnGuardar.setIconSize(QtCore.QSize(50, 50))
         self.btnGuardar.setObjectName("btnGuardar")

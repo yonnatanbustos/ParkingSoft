@@ -30,6 +30,10 @@ class MensualidadUI(QMainWindow):
         telefono = self.ui.txtTelefono.text()
         fechaEntrada = self.ui.txtFechaEntrada.text()
         fechaSalida = self.ui.txtFechaSalida.text()
+
+        placa = placa.upper()
+        propietario =propietario.upper()
+
         try:
             estado = self.parqueadero.ingresarMensualida(placa, tipoVehiculo, propietario, telefono, fechaEntrada,
                                                          fechaSalida)

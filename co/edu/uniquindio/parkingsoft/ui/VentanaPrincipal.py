@@ -29,7 +29,7 @@ class Ui_Principal(object):
         Principal.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         Principal.setAcceptDrops(False)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("/icons/icons-página-principal-.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("..\icons\icons-página-principal-.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Principal.setWindowIcon(icon)
         Principal.setStyleSheet("QLabel{\n"
                                 "font: 18pt \"Tahoma\";\n"
@@ -223,7 +223,7 @@ class Ui_Principal(object):
         self.btnMensualidad.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(
-            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-mensaualidad.png"),
+            "..\icons\icon-mensaualidad.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnMensualidad.setIcon(icon1)
         self.btnMensualidad.setIconSize(QtCore.QSize(50, 50))
@@ -239,7 +239,7 @@ class Ui_Principal(object):
         self.btnPagar.setLayoutDirection(QtCore.Qt.LeftToRight)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(
-            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-pagar.png"),
+            "..\icons\icon-pagar.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPagar.setIcon(icon2)
         self.btnPagar.setIconSize(QtCore.QSize(50, 50))
@@ -254,7 +254,7 @@ class Ui_Principal(object):
         self.btnListarVehiculos.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon3 = QtGui.QIcon()
         icon3.addPixmap(
-            QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-RA.png"),
+            QtGui.QPixmap("..\icons\icon-RA.png"),
             QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnListarVehiculos.setIcon(icon3)
         self.btnListarVehiculos.setIconSize(QtCore.QSize(50, 50))
@@ -269,7 +269,7 @@ class Ui_Principal(object):
         self.btnInventario.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap(
-            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-inventario.png"),
+            "..\icons\icon-inventario.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnInventario.setIcon(icon4)
         self.btnInventario.setIconSize(QtCore.QSize(50, 50))
@@ -299,7 +299,7 @@ class Ui_Principal(object):
         self.btnCuadre.setText("Cuadre")
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap(
-            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-cuadre.png"),
+            "..\icons\icon-cuadre.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnCuadre.setIcon(icon5)
         self.btnCuadre.setIconSize(QtCore.QSize(50, 50))
@@ -319,7 +319,7 @@ class Ui_Principal(object):
         self.btnLimpiar.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(
-            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icons-limpiar.png"),
+            "..\icons\icons-limpiar.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnLimpiar.setIcon(icon6)
         self.btnLimpiar.setIconSize(QtCore.QSize(50, 50))
@@ -334,7 +334,7 @@ class Ui_Principal(object):
         self.btnCambiarPrecio.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon7 = QtGui.QIcon()
         icon7.addPixmap(QtGui.QPixmap(
-            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-editar.png"),
+            "..\icons\icon-editar.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnCambiarPrecio.setIcon(icon7)
         self.btnCambiarPrecio.setIconSize(QtCore.QSize(50, 50))
@@ -349,7 +349,7 @@ class Ui_Principal(object):
         self.btnConsultar.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon8 = QtGui.QIcon()
         icon8.addPixmap(QtGui.QPixmap(
-            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-buscar.png"),
+            "..\icons\icon-buscar.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnConsultar.setIcon(icon8)
         self.btnConsultar.setIconSize(QtCore.QSize(50, 50))
@@ -364,7 +364,7 @@ class Ui_Principal(object):
         self.btnSalir.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon9 = QtGui.QIcon()
         icon9.addPixmap(
-            QtGui.QPixmap("F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/salida.png"),
+            QtGui.QPixmap("..\icons\salida.png"),
             QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnSalir.setIcon(icon9)
         self.btnSalir.setIconSize(QtCore.QSize(50, 50))
@@ -424,7 +424,7 @@ class Ui_Principal(object):
         self.btnEntrada.setSizePolicy(sizePolicy)
         icon10 = QtGui.QIcon()
         icon10.addPixmap(QtGui.QPixmap(
-            "F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-entrada.png"),
+            "..\icons\icon-entrada.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnEntrada.setIcon(icon10)
         self.btnEntrada.setIconSize(QtCore.QSize(50, 50))

@@ -138,7 +138,11 @@ class Parqueadero():
     # nombre_usuario: nombre de usuario  del usuario a registrar
     # password: contraseña  del usuario a registrar
     # tipo: tipo del usuario a registrar (administrador o empleado)
-    def registrarUsuario(self, cedula, nombres, apellidos, nombre_usuario, password, tipo):
+    def registrarUsuario(self, cedula: str, nombres: str, apellidos: str, nombre_usuario: str, password, tipo: str):
+        nombres = nombres.upper()
+        apellidos = apellidos.upper()
+        nombre_usuario = nombre_usuario.upper()
+        tipo = tipo.upper()
 
         if self.buscarUsuario(nombre_usuario) == None:
             if self.buscarUsuarioCedula(cedula) == None:
@@ -183,6 +187,7 @@ class Parqueadero():
     # placa: placa del vehiculo que ingreso al parqueadero.
     # tipoVehiculo: tipo del vehiculo que ingreso (carro o moto)
     def ingresoVehicular(self, placa: str, tipoVehiculo: str):
+        placa = placa.upper()
         estado = False
         mensaje = "None"
         if len(placa) >= 5:
@@ -268,6 +273,7 @@ class Parqueadero():
     # placa: placa del vehiculo que sale del parqueadero
     # descuento: booleano que permite saber si el cobro a realizar tiene descuento o no
     def salidaVehiculo(self, placa, descuento):
+        placa = placa.upper()
         self.vehiculo = self.buscarVehiculo(placa)
         estado = False
 
@@ -541,6 +547,8 @@ class Parqueadero():
                         cursor.execute(sql)
                         self.conect.commit()
                         mensaje = self.mostrarTiqueteSalida(self.vehiculo, self.tiquete)
+                        self.vehiculo = None
+                        self.tiquete = None
                         return 1, mensaje
                 except:
                     self.conect.rollback()
@@ -570,16 +578,23 @@ class Parqueadero():
                 estado = True
 
         except:
-            print("Error en el cierre de caja")
+            raise Exception("Ocurrio un error con la transacción, vuelva a interlo mas tarde")
 
         return producido, estado
 
-    # metodo que permite modificar la tarifa de los vehiculos
-    # horaCarro: nueva tarifa del carro
-    # horaMoto: nueva tarifa de la moto
-    def modificarTarifa(self, horaCarro, horaMoto):
-        self.HORA_MOTO = horaMoto
-        self.HORA_CARRO = horaCarro
+
+    """metodo que permite modificar la tarifa de los vehiculos
+    hora_carro: nueva tarifa del carro
+    hora_moto: nueva tarifa de la moto
+    caro_mensualidad: nueva tarifa de mensualidad carro
+    moto_mensualidad: nueva tarifa de mensualidad moto
+    
+    """
+    def modificarTarifa(self, hora_carro, hora_moto, caro_mensualidad, moto_mensualidad):
+        self.HORA_MOTO = hora_moto
+        self.HORA_CARRO = hora_carro
+        self.CARRO_MENS = caro_mensualidad
+        self.MOTO_MENS = moto_mensualidad
 
     # Metodo para imprimir la informacion en el tiquete
     # vehiculo: vehiculo que ingresa al parqueadero

@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from co.edu.uniquindio.parkingsoft.logica import Parqueadero, FacturaDia, Vehiculo
 from co.edu.uniquindio.parkingsoft.ui.VentanaPagar import Ui_ventanaPagar
 
+
 #  logica de la UI de cobro
 class PagarUI(QMainWindow):
     parqueadero: Parqueadero  # parqueadero actual
@@ -33,12 +34,17 @@ class PagarUI(QMainWindow):
         if resultado == 1:
             respuesta = QMessageBox.question(self, "Imprimir", "¿Imprimir el recibo de salida?", QMessageBox.Yes,
                                              QMessageBox.No)
+
             if respuesta == QMessageBox.Yes:
-                QMessageBox.information(self, "Error", mensaje,
-                                        "Aceptar")
+                QMessageBox.information(self, "Tiquete de Salida", mensaje,
+                                        QMessageBox.Ok)
+                self.close()
         elif resultado == 2:
             QMessageBox.warning(self, "Aviso", "El valor ingresado no es valido", QMessageBox.Ok)
         elif resultado == 3:
+            QMessageBox.information(self, "Error", "No se pudo completar la transacción, intentelo de nuevo",
+                                    QMessageBox.Ok)
+        elif resultado == -1:
             QMessageBox.information(self, "Error", "No se pudo completar la transacción, intentelo de nuevo",
                                     QMessageBox.Ok)
 
