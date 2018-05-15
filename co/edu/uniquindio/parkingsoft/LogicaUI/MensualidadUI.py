@@ -1,8 +1,12 @@
+from datetime import datetime, timedelta
+
+from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 
 from co.edu.uniquindio.parkingsoft.excepciones import MensualidadException
 from co.edu.uniquindio.parkingsoft.logica import Parqueadero
 from co.edu.uniquindio.parkingsoft.ui.VentanaMensualida import Ui_MainWindow
+
 
 #  logica de la UI de mensualidades
 class MensualidadUI(QMainWindow):
@@ -20,6 +24,7 @@ class MensualidadUI(QMainWindow):
         self.ui.btnVolver.clicked.connect(self.volver)
         self.ui.btnGuardar.clicked.connect(self.ingresarMensualida)
         self.ui.tableMensualidades.itemClicked.connect(self.seleccionar)
+        self.ui.btnEliminar.clicked.connect(self.eliminarMensualidad)
         self.actualizarTabla()
 
     # metodo que permite el registro grafico de una mensualidad y llama el metodo logico
@@ -32,7 +37,7 @@ class MensualidadUI(QMainWindow):
         fechaSalida = self.ui.txtFechaSalida.text()
 
         placa = placa.upper()
-        propietario =propietario.upper()
+        propietario = propietario.upper()
 
         try:
             estado = self.parqueadero.ingresarMensualida(placa, tipoVehiculo, propietario, telefono, fechaEntrada,
@@ -40,6 +45,7 @@ class MensualidadUI(QMainWindow):
             if estado == 1:
                 QMessageBox.information(self, "Notificación", "Registro Exitoso", QMessageBox.Ok)
                 self.actualizarTabla()
+                self.cambiarEnable(False)
             elif estado == 2:
                 QMessageBox.critical(self, "Aviso", "El vehiculo ya se encuentra registrado", QMessageBox.Yes)
             elif estado == 3:
@@ -79,8 +85,14 @@ class MensualidadUI(QMainWindow):
 
     # metodo que elimina una mensualidad
     def eliminarMensualidad(self):
-        placa = self
-        hola = 1
+        placa = self.placaAnterior
+        respuesta = QMessageBox.warning(self, "Alerta", "¿Seguro que desea eliminar la mensualidad? " + placa,
+                                        QMessageBox.Yes,
+                                        QMessageBox.No)
+        if respuesta == QMessageBox.Yes:
+            self.parqueadero.eliminarMensualidad(placa)
+            QMessageBox.information(self, "Aviso", "Menusalidad eliminada con exito", QMessageBox.Ok)
+            self.actualizarTabla()
 
     # metodo que permite la modificacion de una mensualidad
     def modificarMensualidad(self):
@@ -118,14 +130,20 @@ class MensualidadUI(QMainWindow):
     def nuevo(self):
         self.cambiarEnable(True)
 
-    #
-    def eliminar(self):
-        row = self.seleccionar()
-        placa = self.ui.tableMensualidades.item(row, 1).text()
-        numero = 0
-        # numero
-
     # metodo que actualiza la tabla de mensualidades
     def actualizarTabla(self):
         tabla = self.ui.tableMensualidades
         self.parqueadero.actualizarTablaMensualida(tabla)
+        self.ui.txtFechaEntrada.setDate(QDate.currentDate())
+        mes = self.ui.txtFechaEntrada.date().month()
+        anio = self.ui.txtFechaEntrada.date().year()
+        dia = self.ui.txtFechaEntrada.date().day()
+        fechaSalida = datetime(anio, mes, dia)
+        fechaSalida = fechaSalida + timedelta(days=31)
+        dia = fechaSalida.date().day
+        mes = fechaSalida.date().month
+        anio = fechaSalida.date().year
+        try:
+            self.ui.txtFechaSalida.setDate(QDate(anio, mes, dia))
+        except:
+            print("Error en la fecha de salida de mensualidad")

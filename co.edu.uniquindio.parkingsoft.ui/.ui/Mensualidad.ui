@@ -255,7 +255,7 @@ border-radius: 5px
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/ParkingSoft/co/edu/uniquindio/parkingsoft/icons/icon-agregar.png</normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/ParkingSoft/co/edu/uniquindio/parkingsoft/icons/icon-agregar.png</iconset>
+         <normaloff>../../co/edu/uniquindio/parkingsoft/icons/icon-agregar.png</normaloff>../../co/edu/uniquindio/parkingsoft/icons/icon-agregar.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -272,7 +272,7 @@ border-radius: 5px
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/ParkingSoft/co/edu/uniquindio/parkingsoft/icons/icon-modificar.png</normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/ParkingSoft/co/edu/uniquindio/parkingsoft/icons/icon-modificar.png</iconset>
+         <normaloff>../../co/edu/uniquindio/parkingsoft/icons/icon-modificar.png</normaloff>../../co/edu/uniquindio/parkingsoft/icons/icon-modificar.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -289,7 +289,7 @@ border-radius: 5px
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/ParkingSoft/co/edu/uniquindio/parkingsoft/icons/icon-eliminar.png</normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/ParkingSoft/co/edu/uniquindio/parkingsoft/icons/icon-eliminar.png</iconset>
+         <normaloff>../../co/edu/uniquindio/parkingsoft/icons/icon-eliminar.png</normaloff>../../co/edu/uniquindio/parkingsoft/icons/icon-eliminar.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -484,7 +484,7 @@ border-radius: 5px
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/ParkingSoft/co/edu/uniquindio/parkingsoft/icons/icon-guardar.png</normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/ParkingSoft/co/edu/uniquindio/parkingsoft/icons/icon-guardar.png</iconset>
+       <normaloff>../../co/edu/uniquindio/parkingsoft/icons/icon-guardar.png</normaloff>../../co/edu/uniquindio/parkingsoft/icons/icon-guardar.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -508,7 +508,7 @@ border-radius: 5px
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/ParkingSoft/co/edu/uniquindio/parkingsoft/icons/icon-volver.png</normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/ParkingSoft/co/edu/uniquindio/parkingsoft/icons/icon-volver.png</iconset>
+      <normaloff>../../co/edu/uniquindio/parkingsoft/icons/icon-volver.png</normaloff>../../co/edu/uniquindio/parkingsoft/icons/icon-volver.png</iconset>
     </property>
     <property name="iconSize">
      <size>

@@ -12,8 +12,8 @@ class Ejemplo():
         print("Uh oh! Esto no existe")
     formatoHora = "%H:%M:%S"
     formatoFecha = '%d/%m/%Y'
-    # fechaEntrada = datetime(2018, 4, 17).strftime(formatoFecha)
-    # print(fechaEntrada)
+    fechaEntrada = datetime(2018, 4, 17).strftime(formatoFecha)
+    print(fechaEntrada)
     fechaEntrada = datetime.strptime("10/02/2018", "%d/%m/%Y")
     # salida = time.strptime(formatoFecha)
     fechaSalida = datetime.strptime("10/03/2018", "%d/%m/%Y")

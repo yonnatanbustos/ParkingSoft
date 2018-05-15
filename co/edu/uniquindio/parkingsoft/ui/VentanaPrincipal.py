@@ -9,6 +9,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFont
 
+
 # UI de la ventana principal de empleado
 class Ui_Principal(object):
     font: QFont
@@ -193,15 +194,12 @@ class Ui_Principal(object):
         self.txtValorCobro.setObjectName("txtValorCobro")
         self.formLayout.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.txtValorCobro)
         self.comboTipo = QtWidgets.QComboBox(self.layoutGeneral)
-        self.comboTipo.setEditable(True)
+        self.comboTipo.setEditable(False)
+        self.comboTipo.addItem("")
+        self.comboTipo.addItem("")
+        self.comboTipo.addItem("")
         self.comboTipo.setModelColumn(0)
         self.comboTipo.setObjectName("comboTipo")
-        self.comboTipo.addItem("")
-        self.comboTipo.addItem("")
-        self.comboTipo.setItemText(1, "CARRO")
-        self.comboTipo.addItem("")
-        self.comboTipo.addItem("")
-        self.comboTipo.addItem("")
         self.formLayout.setWidget(8, QtWidgets.QFormLayout.FieldRole, self.comboTipo)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.formLayout.setItem(0, QtWidgets.QFormLayout.FieldRole, spacerItem)
@@ -224,7 +222,7 @@ class Ui_Principal(object):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(
             "..\icons\icon-mensaualidad.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnMensualidad.setIcon(icon1)
         self.btnMensualidad.setIconSize(QtCore.QSize(50, 50))
         self.btnMensualidad.setObjectName("btnMensualidad")
@@ -240,7 +238,7 @@ class Ui_Principal(object):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(
             "..\icons\icon-pagar.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPagar.setIcon(icon2)
         self.btnPagar.setIconSize(QtCore.QSize(50, 50))
         self.btnPagar.setObjectName("btnPagar")
@@ -270,7 +268,7 @@ class Ui_Principal(object):
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap(
             "..\icons\icon-inventario.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnInventario.setIcon(icon4)
         self.btnInventario.setIconSize(QtCore.QSize(50, 50))
         self.btnInventario.setObjectName("btnInventario")
@@ -300,7 +298,7 @@ class Ui_Principal(object):
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap(
             "..\icons\icon-cuadre.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnCuadre.setIcon(icon5)
         self.btnCuadre.setIconSize(QtCore.QSize(50, 50))
         self.btnCuadre.setShortcut("")
@@ -320,7 +318,7 @@ class Ui_Principal(object):
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(
             "..\icons\icons-limpiar.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnLimpiar.setIcon(icon6)
         self.btnLimpiar.setIconSize(QtCore.QSize(50, 50))
         self.btnLimpiar.setObjectName("btnLimpiar")
@@ -335,7 +333,7 @@ class Ui_Principal(object):
         icon7 = QtGui.QIcon()
         icon7.addPixmap(QtGui.QPixmap(
             "..\icons\icon-editar.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnCambiarPrecio.setIcon(icon7)
         self.btnCambiarPrecio.setIconSize(QtCore.QSize(50, 50))
         self.btnCambiarPrecio.setObjectName("btnCambiarPrecio")
@@ -350,7 +348,7 @@ class Ui_Principal(object):
         icon8 = QtGui.QIcon()
         icon8.addPixmap(QtGui.QPixmap(
             "..\icons\icon-buscar.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnConsultar.setIcon(icon8)
         self.btnConsultar.setIconSize(QtCore.QSize(50, 50))
         self.btnConsultar.setObjectName("btnConsultar")
@@ -425,7 +423,7 @@ class Ui_Principal(object):
         icon10 = QtGui.QIcon()
         icon10.addPixmap(QtGui.QPixmap(
             "..\icons\icon-entrada.png"),
-                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnEntrada.setIcon(icon10)
         self.btnEntrada.setIconSize(QtCore.QSize(50, 50))
         self.btnEntrada.setObjectName("btnEntrada")
@@ -459,9 +457,8 @@ class Ui_Principal(object):
         self.label_6.setText(_translate("Principal", "Tiempo transcurrido:"))
         self.label_7.setText(_translate("Principal", "Valor cobro:"))
         self.comboTipo.setItemText(0, _translate("Principal", "Seleccionar..."))
+        self.comboTipo.setItemText(1, _translate("Principal", "CARRO"))
         self.comboTipo.setItemText(2, _translate("Principal", "MOTO"))
-        self.comboTipo.setItemText(3, _translate("Principal", "CARRO_MENS"))
-        self.comboTipo.setItemText(4, _translate("Principal", "MOTO_MENS"))
         self.label_8.setText(_translate("Principal", "Tipo de tarifa:"))
         self.btnMensualidad.setText(_translate("Principal", "Mensualidades"))
         self.btnPagar.setText(_translate("Principal", "Pagar"))

@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-pagar.png</normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-pagar.png</iconset>
+    <normaloff>../../../images/icon-pagar.png</normaloff>../../../images/icon-pagar.png</iconset>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
@@ -156,7 +156,7 @@ background-color: #0c80c4;
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-imprimir.png</normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-imprimir.png</iconset>
+      <normaloff>../../../images/icon-imprimir.png</normaloff>../../../images/icon-imprimir.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -188,7 +188,7 @@ background-color: #0c80c4;
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-volver.png</normaloff>F:/UQ/2018-1/VIII. Ingenieria de Software III/ProyectoFinal/Parqueadero/images/icon-volver.png</iconset>
+      <normaloff>../../../images/icon-volver.png</normaloff>../../../images/icon-volver.png</iconset>
     </property>
     <property name="iconSize">
      <size>

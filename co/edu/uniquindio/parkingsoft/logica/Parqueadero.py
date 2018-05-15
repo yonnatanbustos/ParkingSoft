@@ -1,9 +1,9 @@
 import time
 from datetime import datetime, timedelta
 
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtSql import QSqlDatabase
-from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget
 from pymysql import connect
 
 from co.edu.uniquindio.parkingsoft.excepciones.MensualidadException import MensualidadException
@@ -455,7 +455,7 @@ class Parqueadero():
     # placa: placa del vehiculo a buscar
     def buscarVehiculoMensualida(self, placa):
         for m in self.listaMensualidades:
-            if m.placa == placa:
+            if m.vehiculo.placa == placa:
                 return m
         return None
 
@@ -479,8 +479,14 @@ class Parqueadero():
 
     # Metodo para listar todas las mensualidades del parqueadero
     # tabla: tabla actal de las mensualidades
-    def actualizarTablaMensualida(self, tabla):
+    def actualizarTablaMensualida(self, tabla: QTableWidget):
         row = 0
+        cantidad = tabla.rowCount()
+        print(cantidad)
+        for i in range(cantidad + 1):
+            print(i)
+            tabla.removeRow(i)
+        header = tabla.horizontalHeader()
         for m in self.listaMensualidades:
             tabla.insertRow(row)
             if m.estado == 0:
@@ -504,7 +510,14 @@ class Parqueadero():
             tabla.setItem(row, 5, valor)
             tabla.setItem(row, 6, fechaEntrada)
             tabla.setItem(row, 7, fechaSalida)
+            header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+
             row += 1
+
+    def eliminarMensualidad(self, placa: str):
+        mensualidad = self.buscarVehiculoMensualida(placa)
+        if mensualidad is not None:
+            self.listaMensualidades.remove(mensualidad)
 
     # metodo que lista los vehiculos que estan en el parqueadero actualmente
     # tabla: tabla de los vehiculos que estan dentro del parqueadero actualmente
@@ -582,7 +595,6 @@ class Parqueadero():
 
         return producido, estado
 
-
     """metodo que permite modificar la tarifa de los vehiculos
     hora_carro: nueva tarifa del carro
     hora_moto: nueva tarifa de la moto
@@ -590,6 +602,7 @@ class Parqueadero():
     moto_mensualidad: nueva tarifa de mensualidad moto
     
     """
+
     def modificarTarifa(self, hora_carro, hora_moto, caro_mensualidad, moto_mensualidad):
         self.HORA_MOTO = hora_moto
         self.HORA_CARRO = hora_carro

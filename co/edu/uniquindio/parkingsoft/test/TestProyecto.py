@@ -28,6 +28,8 @@ class TestProyecto(unittest.TestCase):
     # instancia de un parqueadero.
     parqueadero = Parqueadero.Parqueadero(conect)
 
+
+
     # test del ingreso de un vehiculo al parqueadero.
     def test_ingresoVehico(self):
         usuario = Usuario.Usuario("1234", "yonnatan", "bustos", "yonnatan_bustos", "123", "EMPLEADO")

@@ -12,6 +12,7 @@ from co.edu.uniquindio.parkingsoft.logica import Usuario, Parqueadero, Vehiculo
 from co.edu.uniquindio.parkingsoft.logica.FacturaDia import FacturaDia
 from co.edu.uniquindio.parkingsoft.ui.VentanaPrincipal import Ui_Principal
 
+
 # metodo que crea la conexion a la base de datos
 def createConection():
     Principal.db = QSqlDatabase.addDatabase('QMYSQL')
@@ -22,6 +23,7 @@ def createConection():
     Principal.db.open()
     print(Principal.db.lastError().text())
     return True
+
 
 # logica de la UI de la ventana principal
 class Principal(QMainWindow):
@@ -88,7 +90,7 @@ class Principal(QMainWindow):
                     QMessageBox.warning(self, "Error", "El vehicilo ya se encuentra registrado en el parqueadero",
                                         QMessageBox.Ok)
                 except Exception as e:
-                    QMessageBox.warning(self, "Error", "Error en la transaccion"+ e.args,
+                    QMessageBox.warning(self, "Error", "Error en la transaccion" + e.args,
                                         QMessageBox.Ok)
 
             else:
@@ -207,6 +209,7 @@ class Principal(QMainWindow):
     def reporteAvance(self):
         self.ra = raUI.raUI(self.parqueadero, self)
         self.ra.show()
+
 
 # main de la aplicaacion
 if __name__ == '__main__':

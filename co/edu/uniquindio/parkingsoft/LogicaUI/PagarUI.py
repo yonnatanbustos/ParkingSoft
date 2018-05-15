@@ -38,27 +38,28 @@ class PagarUI(QMainWindow):
             if respuesta == QMessageBox.Yes:
                 QMessageBox.information(self, "Tiquete de Salida", mensaje,
                                         QMessageBox.Ok)
-                self.close()
+            self.close()
         elif resultado == 2:
             QMessageBox.warning(self, "Aviso", "El valor ingresado no es valido", QMessageBox.Ok)
         elif resultado == 3:
-            QMessageBox.information(self, "Error", "No se pudo completar la transacción, intentelo de nuevo",
-                                    QMessageBox.Ok)
+            QMessageBox.critical(self, "Error", "No se pudo completar la transacción, intentelo de nuevo",
+                                 QMessageBox.Ok)
         elif resultado == -1:
-            QMessageBox.information(self, "Error", "No se pudo completar la transacción, intentelo de nuevo",
-                                    QMessageBox.Ok)
+            QMessageBox.critical(self, "Error", "No se pudo completar la transacción, intentelo de nuevo",
+                                 QMessageBox.Ok)
 
     # metodo que imprime el total a cobrar
     def mostrarInformacion(self):
         cobro = self.tiquete.cobro
         descuento = self.tiquete.descuento
+        print("descuento", descuento)
         tiempo = self.tiquete.tiempo
 
         self.ui.txtTiempo.setText(str(tiempo))
-        if descuento:
+        if descuento == 0:
             if self.vehiculo.tipo_vehiculo == "CARRO":
-                self.ui.txtDescuento.setText("$ " + self.parqueadero.HORA_CARRO)
+                self.ui.txtDescuento.setText("$ " + str(self.parqueadero.HORA_CARRO))
             else:
-                self.ui.txtDescuento.setText("$ " + self.parqueadero.HORA_MOTO)
+                self.ui.txtDescuento.setText("$ " + str(self.parqueadero.HORA_MOTO))
         self.ui.txtValor.setText(str(cobro))
         self.ui.labelTotalPagar.setText("$ " + str(cobro))
