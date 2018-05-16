@@ -6,7 +6,7 @@ from time import sleep
 from PyQt5.QtSql import QSqlDatabase
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 
-from co.edu.uniquindio.parkingsoft.LogicaUI import PagarUI, MensualidadUI, raUI
+from co.edu.uniquindio.parkingsoft.LogicaUI import PagarUI, MensualidadUI, raUI, CuadreUI, CambiarPrecioUI
 from co.edu.uniquindio.parkingsoft.excepciones import VehiculoYaExiste
 from co.edu.uniquindio.parkingsoft.logica import Usuario, Parqueadero, Vehiculo
 from co.edu.uniquindio.parkingsoft.logica.FacturaDia import FacturaDia
@@ -55,6 +55,7 @@ class Principal(QMainWindow):
         self.thread.start()
         self.ui.labelCajero.setText(usuario.nombres)
         self.ui.btnPagar.setEnabled(False)
+        self.ui.btnCambiarPrecio.setEnabled(False)
         self.ui.labelFecha.setText(fecha)
         self.ui.btnSalir.clicked.connect(self.salir)
         self.ui.btnEntrada.clicked.connect(self.ingresoVehiculo)
@@ -63,6 +64,9 @@ class Principal(QMainWindow):
         self.ui.btnMensualidad.clicked.connect(self.mensualidad)
         self.ui.btnPagar.clicked.connect(self.abrirPagar)
         self.ui.btnListarVehiculos.clicked.connect(self.reporteAvance)
+        self.ui.btnCuadre.clicked.connect(self.abrirCuadre)
+        self.ui.btnCambiarPrecio.clicked.connect(self.cambiarPrecio)
+        self.ui.radioDescuento.clicked.connect(self.cambiarDescuento)
 
     # hilo que muestra la hora actual en la UI
     def mostrarHoraActual(self):
@@ -121,6 +125,7 @@ class Principal(QMainWindow):
                 self.tiquete = ticket
                 self.vehiculo = vehiculo
                 self.ui.btnPagar.setEnabled(True)
+                self.ui.btnCambiarPrecio.setEnabled(True)
                 self.cambiarSalidaEnable(False)
 
             else:
@@ -166,6 +171,13 @@ class Principal(QMainWindow):
             self.isRunning = False
             sys.exit(0)
 
+    def mostrarTotalPagar(self):
+        if self.tiquete is not None:
+            self.ui.labelTotalPagar.setText("$ " + str(self.tiquete.cobro))
+            self.ui.txtValorCobro.setText("$ " + str(self.tiquete.cobro))
+        else:
+            self.ui.labelTotalPagar.setText("$ 0")
+
     # metodo que limpia todos los campos de texto
     def limpiar(self):
         self.ui.txtPlaca.setText("")
@@ -180,6 +192,7 @@ class Principal(QMainWindow):
         self.ui.labelTotalPagar.setText("$ 0")
         self.cambiarSalidaEnable(True)
         self.ui.btnPagar.setEnabled(False)
+        self.ui.btnCambiarPrecio.setEnabled(False)
 
     # metodo que permite la edicion y ejecucion de funcionalidades bloqueadas
     def cambiarSalidaEnable(self, estado: bool):
@@ -202,13 +215,29 @@ class Principal(QMainWindow):
 
     # metodo que abre la ventana de cobro
     def abrirPagar(self):
-        self.venPagar = PagarUI.PagarUI(self.parqueadero, self.tiquete, self.vehiculo)
+        self.venPagar = PagarUI.PagarUI(self.parqueadero, self.tiquete, self.vehiculo, self)
         self.venPagar.show()
 
     # metodo que abre la ventana de reportes
     def reporteAvance(self):
         self.ra = raUI.raUI(self.parqueadero, self)
         self.ra.show()
+
+    def cambiarDescuento(self):
+        estado = self.ui.radioDescuento.isChecked()
+        if estado:
+            self.tiquete.descuento = True
+
+        else:
+            self.tiquete.descuento = False
+
+    def cambiarPrecio(self):
+        self.cambiar_precio = CambiarPrecioUI.CambiarPrecioUI(self.parqueadero, self.tiquete, self)
+        self.cambiar_precio.show()
+
+    def abrirCuadre(self):
+        self.cuadre = CuadreUI.CuadreUI(self.parqueadero, self)
+        self.cuadre.show()
 
 
 # main de la aplicaacion

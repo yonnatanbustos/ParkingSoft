@@ -6,12 +6,17 @@ from PyQt5.QtSql import QSqlDatabase
 from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget
 from pymysql import connect
 
+from co.edu.uniquindio.parkingsoft.excepciones.CierreCajaException import CierreCajaException
 from co.edu.uniquindio.parkingsoft.excepciones.MensualidadException import MensualidadException
+from co.edu.uniquindio.parkingsoft.excepciones.PlacaErrorException import PlacaErrorException
+from co.edu.uniquindio.parkingsoft.excepciones.TiqueteException import TiqueteException
 from co.edu.uniquindio.parkingsoft.excepciones.VehiculoYaExiste import VehiculoYaExiste
-from co.edu.uniquindio.parkingsoft.logica import Usuario, FacturaDia, Vehiculo, Mensualidad
+from co.edu.uniquindio.parkingsoft.logica import Usuario, FacturaDia, Vehiculo, Mensualidad, Cuadre
 
 
 # clase que modela un objeto tipo parqueadero.
+
+
 class Parqueadero():
     # Declaracion de los atributos del parqueadero
     HORA_MOTO = 600
@@ -24,6 +29,7 @@ class Parqueadero():
     listaUsuarios: ()
     listaFacturas: ()
     listaMensualidades: ()
+    listaCuadres: ()
     NOMBRE: str = "EL PARQUEADERO EL ÑINO JAIR"
     direccion: str = "Calle 18 #17-47"
     telefono: str = "Armenia"
@@ -44,6 +50,7 @@ class Parqueadero():
         self.listaUsuarios = []
         self.listaFacturas = []
         self.listaMensualidades = []
+        self.listaCuadres = []
         print(conect.open)
         self.conect = conect
         print(self.conect.open)
@@ -286,9 +293,9 @@ class Parqueadero():
                     self.tiquete.horaSalida = horaSalida
                     self.tiquete.fechaSalida = fechaSalida
                     if descuento == True:
-                        self.tiquete.descuento = 1
+                        self.tiquete.descuento = True
                     else:
-                        self.tiquete.descuento = 0
+                        self.tiquete.descuento = False
 
                     tiempo = self.calcularTiempo(self.tiquete)
                     self.tiquete.tiempo = tiempo
@@ -552,11 +559,15 @@ class Parqueadero():
                         sql = "UPDATE vehiculo SET cancelado = 1 WHERE placa =('%s')" % (placa)
                         cursor.execute(sql)
                         self.conect.commit()
+                        if self.tiquete.descuento:
+                            descuento = 1
+                        else:
+                            descuento = 0
 
                         sql = "UPDATE tiquete SET horaSalida =('%s'), fechaSalida =('%s'), tiempo =('%s'), cobro =(%i), descuento =(%i), cancelado = 1 WHERE idTiquete = (%i)" % (
                             self.tiquete.horaSalida, self.tiquete.fechaSalida, self.tiquete.tiempo,
                             self.tiquete.cobro,
-                            self.tiquete.descuento, self.tiquete.idTiquete)
+                            descuento, self.tiquete.idTiquete)
                         cursor.execute(sql)
                         self.conect.commit()
                         mensaje = self.mostrarTiqueteSalida(self.vehiculo, self.tiquete)
@@ -587,13 +598,59 @@ class Parqueadero():
                 cursor.execute(sql)
                 self.conect.commit()
                 resultado = cursor.fetchone()
-                producido = resultado[0]
+                if resultado[0] is None:
+                    producido = 0
+                else:
+                    producido = resultado[0]
                 estado = True
 
         except:
-            raise Exception("Ocurrio un error con la transacción, vuelva a interlo mas tarde")
+            raise CierreCajaException("Ocurrio un error con la transacción, vuelva a interlo mas tarde")
 
         return producido, estado
+
+    def guardarCuadre(self):
+        producido, estado = self.calcularCierreCaja()
+        fechaActual = datetime.today()
+        fechaActualAux = fechaActual.strftime(self.FORMATO_FECHA)
+        idCuadre = -1
+        cuadre = None
+        try:
+            with self.conect.cursor() as cursor:
+                sql = "SELECT idUsuario FROM usuario WHERE cedula = ('%s')" % (self.usuario.cedula)
+                cursor.execute(sql)
+                resultado = cursor.fetchone()
+                idUsuario = resultado[0]
+
+                sql = "INSERT INTO cierrecaja (idUsuario, fecha, valor) VALUES (%d, '%s', %d)" % (
+                    idUsuario, fechaActualAux, producido)
+                cursor.execute(sql)
+                self.conect.commit()
+                sql = "SELECT idCuadre FROM cierrecaja ORDER BY idCuadre DESC LIMIT 1"
+                cursor.execute(sql)
+                resultado = cursor.fetchone()
+                idCuadre = resultado[0]
+                cuadre = Cuadre.Cuadre(self, idCuadre, self.usuario, fechaActualAux, producido)
+                self.listaCuadres.append(cuadre)
+        except:
+            raise CierreCajaException("Error al calcular el cuadre, vuelva a intentarlo mas tarde")
+
+        return cuadre
+
+    def imprimirCuadre(self):
+        cuadre: Cuadre = self.guardarCuadre()
+
+        mensaje = "CUADRE DIARIO\n"
+        mensaje += self.NOMBRE + "\n"
+        mensaje += "Regimen: " + self.REGIMEN + "   " + self.NIT + "\n"
+        mensaje += "Direccion: " + self.direccion + "  Telefono: " + self.telefono + "\n"
+        mensaje += "Numero de Factura: " + str(cuadre.idCuadre) + "\n"
+        mensaje += "Fecha: " + cuadre.fecha + "\n"
+        mensaje += "Cajero: " + self.usuario.nombres + " " + self.usuario.apellidos + "\n"
+        mensaje += "----------------------------------------\n"
+        mensaje += "Total Producido: " + str(cuadre.valor) + "\n"
+        mensaje += "----------------------------------------\n"
+        return mensaje
 
     """metodo que permite modificar la tarifa de los vehiculos
     hora_carro: nueva tarifa del carro
@@ -608,6 +665,19 @@ class Parqueadero():
         self.HORA_CARRO = hora_carro
         self.CARRO_MENS = caro_mensualidad
         self.MOTO_MENS = moto_mensualidad
+
+    def cambiarPrecio(self, nuevo_cobro: int):
+
+        if self.vehiculo is not None:
+            if self.tiquete is not None:
+                if nuevo_cobro >= 0:
+                    self.tiquete.cobro = nuevo_cobro
+                else:
+                    raise Exception("El valor ingresado debe ser positivo")
+            else:
+                raise TiqueteException("El tiquete no es valido")
+        else:
+            raise PlacaErrorException("El vehculo no se encuentra en el parqueadero")
 
     # Metodo para imprimir la informacion en el tiquete
     # vehiculo: vehiculo que ingresa al parqueadero
@@ -655,7 +725,7 @@ class Parqueadero():
         mensaje += "Hora Salida: " + tiquete.horaSalida + "\n"
         mensaje += "Fecha Salida: " + tiquete.fechaSalida + "\n"
         mensaje += "Total Tiempo: " + str(tiquete.tiempo) + "\n"
-        if tiquete.descuento:
+        if tiquete.descuento == True:
             if vehiculo.tipo_vehiculo == "CARRO":
                 mensaje += "Descuento: $" + str(self.HORA_CARRO) + "\n"
             else:

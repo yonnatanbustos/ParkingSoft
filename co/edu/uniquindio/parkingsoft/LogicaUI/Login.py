@@ -47,7 +47,7 @@ class Login(QMainWindow):
         self.parqueadero = Parqueadero.Parqueadero(self.conect)
         self.ui.btnIniciarSesion.clicked.connect(self.iniciarSesion)
         self.ui.btnCancelar.clicked.connect(self.salir)
-        self.principal = None
+
 
     # metodo que captura los datos de los campos y llama el metodo logico de iniciar sesion
     def iniciarSesion(self):
